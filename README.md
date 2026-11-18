@@ -24,7 +24,8 @@ Install from a path or git while the repo is private, e.g. `pnpm add ../tailwind
 `topcoat-button-bar`, `topcoat-checkbox`, `topcoat-radio-button`, `topcoat-switch`, `topcoat-range`,
 `topcoat-text-input`, `topcoat-textarea`, `topcoat-search-input`, `topcoat-list`, `topcoat-navigation-bar`,
 `topcoat-tab-bar`, `topcoat-notification`, `topcoat-select` (`--large`), `topcoat-field` (`__label`,
-`__message`, `__message--invalid`, or any `[role="alert"]` message), `topcoat-tooltip` (skin only; you position it).
+`__message`, `__message--invalid`, or any `[role="alert"]` message), `topcoat-tooltip` (skin only; you position it), `topcoat-dialog` (`__title`, `__body`, `__actions`; a skin
+for a native `<dialog>` you open with `showModal()`).
 See `demo/` for the markup of each.
 
 Toggle buttons: a button, quiet/large button, icon button or button bar segment with `aria-pressed="true"` looks

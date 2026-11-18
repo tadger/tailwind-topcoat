@@ -5,7 +5,7 @@ import { buildCss } from "./helpers/build.js";
 import { topdocClasses } from "./helpers/topdoc.js";
 
 // Tailwind v4 emits plugin components only for classes found in content, so feed it every topdoc class.
-const NEW_CLASSES = ["topcoat-select", "topcoat-select--large", "topcoat-field", "topcoat-field__label", "topcoat-field__message", "topcoat-field__message--invalid", "topcoat-tooltip"];
+const NEW_CLASSES = ["topcoat-select", "topcoat-select--large", "topcoat-field", "topcoat-field__label", "topcoat-field__message", "topcoat-field__message--invalid", "topcoat-tooltip", "topcoat-dialog", "topcoat-dialog__title", "topcoat-dialog__body", "topcoat-dialog__actions"];
 const COMPONENTS = ["Button", "Icon Button", "Button Bar", "Text input", "Textarea", "Search Input", "Checkbox", "Radio Button", "Switch", "Range", "List", "Navigation Bar", "Tab Bar", "Notification"];
 
 const OVERRIDES = ["px-6", "p-2", "py-1", "rounded-none", "bg-red-500", "text-lg"];
@@ -94,6 +94,7 @@ test("covers the select, field and tooltip classes", () => {
   const missing = [
     "topcoat-select", "topcoat-select--large", "topcoat-field", "topcoat-field__label",
     "topcoat-field__message", "topcoat-field__message--invalid", "topcoat-tooltip",
+    "topcoat-dialog", "topcoat-dialog__title", "topcoat-dialog__body", "topcoat-dialog__actions",
   ].filter((c) => !hasSelector(`.${c}`));
   assert.deepEqual(missing, []);
 });
@@ -102,4 +103,40 @@ test("aria-pressed=true has a selected look on buttons and button bar segments",
   for (const c of ["topcoat-button", "topcoat-button--large", "topcoat-button-bar__button", "topcoat-button-bar__button--large"]) {
     assert.ok(hasSelector(`.${c}[aria-pressed="true"]`), `${c}[aria-pressed="true"] missing`);
   }
+});
+
+// ---- dialog ----
+const dialogRules = () => {
+  const out = [];
+  postcss.parse(css).walkRules((r) => {
+    const own = r.selector.includes(".topcoat-dialog") && !r.selector.includes("__");
+    if (own) out.push(r);
+  });
+  return out;
+};
+
+test("dialog has a ::backdrop rule drawn from the --tc-backdrop token", () => {
+  let backdrop;
+  postcss.parse(css).walkRules((r) => {
+    const nested = r.selector.trim() === "&::backdrop" && r.parent?.selector?.includes(".topcoat-dialog");
+    if (nested || r.selector.includes(".topcoat-dialog::backdrop")) backdrop = r;
+  });
+  assert.ok(backdrop, "::backdrop rule missing");
+  assert.match(backdrop.toString(), /var\(--tc-backdrop/);
+  assert.doesNotMatch(backdrop.toString(), /#[0-9a-f]{3,8}\b/i, "backdrop must not hard-code a hex color");
+});
+
+test("dialog never sets display on the closed element (a closed <dialog> must stay hidden)", () => {
+  for (const rule of dialogRules()) {
+    if (/\[open\]|:modal|::backdrop/.test(rule.selector)) continue;
+    const display = rule.nodes.filter((n) => n.type === "decl" && n.prop === "display");
+    assert.deepEqual(display.map(String), [], `${rule.selector} must not set display`);
+  }
+});
+
+test("dialog focus styling pairs the ring with --tc-focus-border", () => {
+  const focus = dialogRules().filter((r) => /:focus/.test(r.selector) || r.nodes.some((n) => n.type === "rule" && /:focus/.test(n.selector)));
+  assert.ok(focus.length, "no focus styling on the dialog");
+  assert.match(focus.map(String).join("\n"), /--tc-focus-border/);
+  assert.match(focus.map(String).join("\n"), /--tc-focus-ring/);
 });

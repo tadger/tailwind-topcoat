@@ -16,5 +16,6 @@ import notification from "./notification.js";
 import select from "./select.js";
 import field from "./field.js";
 import tooltip from "./tooltip.js";
+import dialog from "./dialog.js";
 
-export default { ...button, ...iconButton, ...buttonBar, ...textInput, ...textarea, ...searchInput, ...checkbox, ...radioButton, ...switchComponent, ...range, ...list, ...navigationBar, ...tabBar, ...notification, ...select, ...field, ...tooltip };
+export default { ...button, ...iconButton, ...buttonBar, ...textInput, ...textarea, ...searchInput, ...checkbox, ...radioButton, ...switchComponent, ...range, ...list, ...navigationBar, ...tabBar, ...notification, ...select, ...field, ...tooltip, ...dialog };

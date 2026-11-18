@@ -144,6 +144,19 @@
       <p class="m-0 text-topcoat-caption">Caption and help text</p>
       <p class="m-0 text-topcoat-body"><span class="font-topcoat-regular">Regular</span> <span class="font-topcoat-medium">Medium</span> <span class="font-topcoat-strong">Strong</span> <code class="font-topcoat-mono text-topcoat-control">120.5 bpm</code></p>
     </section>
+
+    <section class="grid content-start gap-3">
+      <h2 class="m-0 text-topcoat-body font-topcoat-strong">Dialog</h2>
+      <div><button class="topcoat-button--cta" type="button" data-open-dialog>Remove bar&hellip;</button></div>
+      <dialog id="demo-dialog" class="topcoat-dialog" aria-labelledby="demo-dialog-title" aria-describedby="demo-dialog-body">
+        <h2 class="topcoat-dialog__title" id="demo-dialog-title">Remove bar 2?</h2>
+        <p class="topcoat-dialog__body" id="demo-dialog-body">Bar 2 has 7 steps. Removing it deletes them.</p>
+        <div class="topcoat-dialog__actions">
+          <button class="topcoat-button" type="button" data-close-dialog>Cancel</button>
+          <button class="topcoat-button--cta" type="button" data-close-dialog>Remove bar</button>
+        </div>
+      </dialog>
+    </section>
   </main>
 
   <script>
@@ -155,6 +168,8 @@
     const params = new URLSearchParams(location.search);
     for (const k of ["scheme", "scale"]) if (params.has(k)) set[k](params.get(k));
     document.addEventListener("click", (e) => {
+      if (e.target.closest("[data-open-dialog]")) document.getElementById("demo-dialog").showModal();
+      if (e.target.closest("[data-close-dialog]")) document.getElementById("demo-dialog").close();
       const toggle = e.target.closest("[data-demo-toggle]");
       if (toggle) toggle.setAttribute("aria-pressed", String(toggle.getAttribute("aria-pressed") !== "true"));
       for (const k of ["scheme", "scale"]) {

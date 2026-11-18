@@ -66,6 +66,26 @@ test("demo shows every type role and uses the scale for its own headings", async
   await page.close();
 });
 
+test("demo dialog opens as a modal in all four theme combinations, shows its backdrop, and Escape closes it", async () => {
+  mkdirSync(`${root}test/screenshots`, { recursive: true });
+  const { page } = await open();
+  for (const scheme of ["light", "dark"]) {
+    for (const scale of ["desktop", "mobile"]) {
+      await page.click(`[data-set-scheme="${scheme}"]`);
+      await page.click(`[data-set-scale="${scale}"]`);
+      await page.click("[data-open-dialog]");
+      assert.equal(await page.$eval("#demo-dialog", (d) => d.open && d.matches(":modal")), true, `${scheme}/${scale} should be modal`);
+      const backdrop = await page.$eval("#demo-dialog", (d) => getComputedStyle(d, "::backdrop").backgroundColor);
+      assert.match(backdrop, /^rgba\(0, 0, 0, 0\.[3-8]/, `backdrop ${backdrop}`);
+      await page.waitForTimeout(100);
+      await page.screenshot({ path: `${root}test/screenshots/demo-dialog-${scheme}-${scale}.png` });
+      await page.keyboard.press("Escape");
+      assert.equal(await page.$eval("#demo-dialog", (d) => d.open), false, "Escape closes it");
+    }
+  }
+  await page.close();
+});
+
 test("demo switches all four theme combinations and screenshots each", async () => {
   mkdirSync(`${root}test/screenshots`, { recursive: true });
   const { page } = await open();

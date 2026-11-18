@@ -14,6 +14,6 @@ export default {
     backgroundColor: "var(--tc-surface)",
     border: "1px solid var(--tc-border)",
     borderRadius: "var(--tc-radius)",
-    boxShadow: "0 2px 6px rgba(0, 0, 0, 0.25)",
+    boxShadow: "var(--tc-shadow-float)",
   },
 };

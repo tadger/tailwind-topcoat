@@ -22,6 +22,7 @@
     --tc-leading-tight: 1.2;
     --tc-leading-caption: 1.3;
     --tc-leading-body: 1.5;
+    --tc-shadow-float: 0 2px 6px rgba(0, 0, 0, 0.25); /* tooltips, dialogs */
   }
 
   /* ---- scale ---- */
@@ -160,6 +161,7 @@
     --tc-invalid: #ec514e;
     --tc-invalid-text: #a61e15;
     --tc-highlight: #b35c00;
+    --tc-backdrop: rgba(0, 0, 0, 0.4);
     --tc-text-on-highlight: #fff;
     --tc-surface-sunken: #d6dcdb;
     --tc-selected-bg: #e5f1fb;
@@ -209,6 +211,7 @@
       --tc-invalid: #ec514e;
       --tc-invalid-text: #ffcdca;
       --tc-highlight: #fbbf24;
+      --tc-backdrop: rgba(0, 0, 0, 0.6);
       --tc-text-on-highlight: #1a1a1a;
       --tc-surface-sunken: #454646;
       --tc-selected-bg: #3f4041;
@@ -275,6 +278,8 @@
   --color-topcoat-invalid: var(--tc-invalid);
   --color-topcoat-invalid-text: var(--tc-invalid-text);
   --color-topcoat-highlight: var(--tc-highlight);
+  --color-topcoat-backdrop: var(--tc-backdrop);
+  --shadow-topcoat-float: var(--tc-shadow-float);
   --color-topcoat-on-highlight: var(--tc-text-on-highlight);
   --color-topcoat-selected: var(--tc-selected-bg);
   --radius-topcoat-pill: var(--tc-radius-pill);

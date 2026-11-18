@@ -59,6 +59,7 @@ test("every role token is exposed as a Tailwind utility", async () => {
     "border-topcoat-cta-border", "border-topcoat-focus", "bg-topcoat-focus-ring", "bg-topcoat-invalid",
     "bg-topcoat-selected", "rounded-topcoat-pill", "shadow-topcoat-input", "shadow-topcoat-search",
     "shadow-topcoat-inset-active", "bg-topcoat-highlight", "ring-topcoat-highlight", "text-topcoat-invalid-text",
+    "bg-topcoat-backdrop", "shadow-topcoat-float",
   ];
   const css = await buildCss({ candidates: utilities });
   const missing = utilities.filter((u) => !css.includes(`.${u} {`));
@@ -67,7 +68,7 @@ test("every role token is exposed as a Tailwind utility", async () => {
 
 test("highlight and invalid-text tokens exist in both light and dark", async () => {
   const { light, dark } = await collect();
-  for (const t of ["--tc-highlight", "--tc-invalid-text"]) {
+  for (const t of ["--tc-highlight", "--tc-invalid-text", "--tc-backdrop"]) {
     assert.ok(light[t] && dark[t], `${t} must be defined in light and dark`);
     assert.notEqual(light[t], dark[t], `${t} should differ between schemes`);
   }
@@ -75,7 +76,7 @@ test("highlight and invalid-text tokens exist in both light and dark", async () 
 
 test("typography constants live once on html, not duplicated per scheme or scale", async () => {
   const { constants, light, dark, desktop, mobile } = await collect();
-  const keys = ["--tc-font-family", "--tc-font-family-mono", "--tc-weight-regular", "--tc-weight-medium", "--tc-weight-strong", "--tc-leading-tight", "--tc-leading-body", "--tc-leading-caption"];
+  const keys = ["--tc-font-family", "--tc-font-family-mono", "--tc-weight-regular", "--tc-weight-medium", "--tc-weight-strong", "--tc-leading-tight", "--tc-leading-body", "--tc-leading-caption", "--tc-shadow-float"];
   for (const k of keys) {
     assert.ok(constants[k], `${k} missing from the html constants rule`);
     for (const [name, b] of Object.entries({ light, dark, desktop, mobile })) assert.equal(b[k], undefined, `${k} must not be redeclared in ${name}`);
