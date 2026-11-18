@@ -10,7 +10,7 @@ with light/dark and desktop/mobile sizes built in.
 ```
 
 ```html
-<body class="bg-topcoat-page font-topcoat text-topcoat-text">
+<body class="bg-topcoat-page font-topcoat text-topcoat-body text-topcoat-text">
   <button class="topcoat-button--cta px-6">Save</button>
   <input class="topcoat-search-input" type="search" placeholder="search">
 </body>
@@ -47,6 +47,32 @@ All of them are always in your CSS (about 5 KB gzipped); Tailwind's `prefix()` i
 - **Tokens** are `--tc-*` variables (see `theme.css`), also exposed as utilities: `bg-topcoat-surface`,
   `text-topcoat-text`, `border-topcoat-border`, `rounded-topcoat`, `shadow-topcoat-inset`, `bg-topcoat-highlight`
   (amber, for "this is happening now"; put `text-topcoat-on-highlight` on text over a fill), `text-topcoat-invalid-text`, and so on.
+
+## Typography
+
+Components never set a font family; they inherit the page's, so put `font-topcoat` (or your own font) on `<body>`.
+The theme does not bundle or load a font. To get the intended look, load Source Sans 3 (SIL OFL; the name Topcoat
+used was Source Sans Pro, kept as a fallback in the stack):
+
+```html
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600&display=swap">
+```
+
+| Role | Utility | Desktop / mobile | Line-height |
+|---|---|---|---|
+| Display | `text-topcoat-display` | 32px / 40px | 1.2 |
+| Title | `text-topcoat-title` | 20px / 24px | 1.2 |
+| Body | `text-topcoat-body` | 16px / 18px | 1.5 |
+| Control large | `text-topcoat-control-large` | 14px / 20.8px | 1.3 |
+| Control | `text-topcoat-control` | 12px / 16px | 1.3 |
+| Caption | `text-topcoat-caption` | 10.8px / 14.4px | 1.3 |
+
+Weights: `font-topcoat-regular` (400), `-medium` (500), `-strong` (600). Families: `font-topcoat`, `font-topcoat-mono`.
+Leading: `leading-topcoat-tight` (1.2), `-caption` (1.3), `-body` (1.5). "Control" is the text size inside buttons and inputs;
+captions and field messages are derived from it. All of these are `--tc-*` tokens (`--tc-text-*`, `--tc-weight-*`,
+`--tc-leading-*`, `--tc-font-family[-mono]`); override them on `:root`. Textareas use the body size (title when large).
 
 ## Fixes over the original
 

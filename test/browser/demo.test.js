@@ -55,6 +55,17 @@ test("demo shows the select, field, tooltip, highlight and toggle-button primiti
   await page.close();
 });
 
+test("demo shows every type role and uses the scale for its own headings", async () => {
+  const { page } = await open();
+  const inDom = new Set(await page.$$eval("[class]", (els) => els.flatMap((e) => [...e.classList])));
+  const roles = ["caption", "control", "control-large", "body", "title", "display"].map((r) => `text-topcoat-${r}`);
+  assert.deepEqual(roles.filter((c) => !inDom.has(c)), [], "type roles missing from the demo");
+  for (const c of ["font-topcoat-regular", "font-topcoat-medium", "font-topcoat-strong", "font-topcoat-mono"]) assert.ok(inDom.has(c), `${c} missing from the demo`);
+  const stray = await page.$$eval("h1, h2", (els) => els.filter((e) => /(^|\s)text-(xs|sm|base|lg|xl|[2-9]xl)(\s|$)/.test(e.className)).map((e) => e.textContent));
+  assert.deepEqual(stray, [], "demo headings should use text-topcoat-* roles, not raw Tailwind sizes");
+  await page.close();
+});
+
 test("demo switches all four theme combinations and screenshots each", async () => {
   mkdirSync(`${root}test/screenshots`, { recursive: true });
   const { page } = await open();

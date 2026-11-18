@@ -7,10 +7,31 @@
  * Components read only these variables.
  */
 @layer base {
+  /*
+   * ---- typography constants ----
+   * Not scheme- or scale-specific, so they live once, on `html` (lower specificity than :root, so an app can
+   * override them on :root). Components never set a font family: they inherit the page's, so put
+   * `font-topcoat` (or your own font) on <body>.
+   */
+  html {
+    --tc-font-family: "Source Sans 3", "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --tc-font-family-mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+    --tc-weight-regular: 400;
+    --tc-weight-medium: 500;
+    --tc-weight-strong: 600;
+    --tc-leading-tight: 1.2;
+    --tc-leading-caption: 1.3;
+    --tc-leading-body: 1.5;
+  }
+
   /* ---- scale ---- */
   :root,
   [data-topcoat="desktop"] {
     --tc-font-size: 12px;
+    --tc-text-caption: calc(var(--tc-font-size) * 0.9);
+    --tc-text-body: 1rem;
+    --tc-text-title: 1.25rem;
+    --tc-text-display: 2rem;
     --tc-font-size-large: 0.875rem;
     --tc-font-weight-large: 600;
     --tc-letter-spacing: 0;
@@ -24,8 +45,8 @@
     --tc-icon-size: 0.81406rem;
     --tc-icon-size-large: 1.06344rem;
     --tc-textarea-padding: 1rem;
-    --tc-textarea-font-size: 1rem;
-    --tc-textarea-font-size-large: 1.3rem;
+    --tc-textarea-font-size: var(--tc-text-body);
+    --tc-textarea-font-size-large: var(--tc-text-title);
     --tc-search-icon-size: 12px;
     --tc-search-icon-offset: 0.625rem;
     --tc-search-icon-gap: 0.375rem;
@@ -63,6 +84,10 @@
 
   [data-topcoat="mobile"] {
     --tc-font-size: 16px;
+    --tc-text-caption: calc(var(--tc-font-size) * 0.9);
+    --tc-text-body: 1.125rem;
+    --tc-text-title: 1.5rem;
+    --tc-text-display: 2.5rem;
     --tc-font-size-large: 1.3rem;
     --tc-font-weight-large: 400;
     --tc-letter-spacing: 1px;
@@ -76,8 +101,8 @@
     --tc-icon-size: 1.62rem;
     --tc-icon-size-large: 2.5rem;
     --tc-textarea-padding: 2rem;
-    --tc-textarea-font-size: 2.5rem;
-    --tc-textarea-font-size-large: 3rem;
+    --tc-textarea-font-size: var(--tc-text-body);
+    --tc-textarea-font-size-large: var(--tc-text-title);
     --tc-search-icon-size: 16px;
     --tc-search-icon-offset: 1rem;
     --tc-search-icon-gap: 0.5rem;
@@ -115,7 +140,6 @@
 
   /* ---- color (light default, dark via Tailwind's dark variant) ---- */
   :root {
-    --tc-font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
     --tc-page-bg: #dfe2e2;
     --tc-text: #454545;
     --tc-text-muted: #c6c8c8;
@@ -165,7 +189,6 @@
   :root,
   [data-topcoat] {
     @variant dark {
-      --tc-font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
       --tc-page-bg: #4b4d4e;
       --tc-text: #c6c8c8;
       --tc-text-muted: #737373;
@@ -213,6 +236,25 @@
 @theme inline {
   --color-topcoat-page: var(--tc-page-bg);
   --font-topcoat: var(--tc-font-family);
+  --font-topcoat-mono: var(--tc-font-family-mono);
+  --font-weight-topcoat-regular: var(--tc-weight-regular);
+  --font-weight-topcoat-medium: var(--tc-weight-medium);
+  --font-weight-topcoat-strong: var(--tc-weight-strong);
+  --leading-topcoat-tight: var(--tc-leading-tight);
+  --leading-topcoat-caption: var(--tc-leading-caption);
+  --leading-topcoat-body: var(--tc-leading-body);
+  --text-topcoat-caption: var(--tc-text-caption);
+  --text-topcoat-caption--line-height: var(--tc-leading-caption);
+  --text-topcoat-control: var(--tc-font-size);
+  --text-topcoat-control--line-height: var(--tc-leading-caption);
+  --text-topcoat-control-large: var(--tc-font-size-large);
+  --text-topcoat-control-large--line-height: var(--tc-leading-caption);
+  --text-topcoat-body: var(--tc-text-body);
+  --text-topcoat-body--line-height: var(--tc-leading-body);
+  --text-topcoat-title: var(--tc-text-title);
+  --text-topcoat-title--line-height: var(--tc-leading-tight);
+  --text-topcoat-display: var(--tc-text-display);
+  --text-topcoat-display--line-height: var(--tc-leading-tight);
   --color-topcoat-surface: var(--tc-surface);
   --color-topcoat-surface-raised: var(--tc-surface-raised);
   --color-topcoat-text: var(--tc-text);

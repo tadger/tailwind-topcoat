@@ -14,13 +14,14 @@ const isDark = (node) => {
 async function collect() {
   const css = await buildCss({ candidates: ["bg-topcoat-surface"] });
   const root = postcss.parse(css);
-  const buckets = { light: {}, dark: {}, desktop: {}, mobile: {}, mobileDark: {} };
+  const buckets = { light: {}, dark: {}, desktop: {}, mobile: {}, mobileDark: {}, constants: {} };
   root.walkDecls(/^--tc-/, (decl) => {
     let rule = decl.parent;
     while (rule && rule.type !== "rule") rule = rule.parent;
     const sel = rule?.selector ?? "";
     const dark = isDark(decl);
     if (sel.includes('[data-topcoat="mobile"]')) buckets[dark ? "mobileDark" : "mobile"][decl.prop] = decl.value;
+    else if (sel.trim() === "html") buckets.constants[decl.prop] = decl.value;
     else if (sel.includes('[data-topcoat="desktop"]')) buckets.desktop[decl.prop] = decl.value;
     else if (/^:root(,\s*\[data-topcoat\])?$/.test(sel.trim())) buckets[dark ? "dark" : "light"][decl.prop] = decl.value;
   });
@@ -69,5 +70,33 @@ test("highlight and invalid-text tokens exist in both light and dark", async () 
   for (const t of ["--tc-highlight", "--tc-invalid-text"]) {
     assert.ok(light[t] && dark[t], `${t} must be defined in light and dark`);
     assert.notEqual(light[t], dark[t], `${t} should differ between schemes`);
+  }
+});
+
+test("typography constants live once on html, not duplicated per scheme or scale", async () => {
+  const { constants, light, dark, desktop, mobile } = await collect();
+  const keys = ["--tc-font-family", "--tc-font-family-mono", "--tc-weight-regular", "--tc-weight-medium", "--tc-weight-strong", "--tc-leading-tight", "--tc-leading-body", "--tc-leading-caption"];
+  for (const k of keys) {
+    assert.ok(constants[k], `${k} missing from the html constants rule`);
+    for (const [name, b] of Object.entries({ light, dark, desktop, mobile })) assert.equal(b[k], undefined, `${k} must not be redeclared in ${name}`);
+  }
+  assert.match(constants["--tc-font-family"], /^"Source Sans 3", "Source Sans Pro"/);
+  assert.deepEqual(["400", "500", "600"], [constants["--tc-weight-regular"], constants["--tc-weight-medium"], constants["--tc-weight-strong"]]);
+});
+
+test("the type scale is defined for desktop and mobile, and prose sizes grow on mobile", async () => {
+  const { desktop, mobile } = await collect();
+  for (const k of ["--tc-text-caption", "--tc-text-body", "--tc-text-title", "--tc-text-display"]) {
+    assert.ok(desktop[k] && mobile[k], `${k} must be defined for both scales`);
+  }
+  for (const k of ["--tc-text-body", "--tc-text-title", "--tc-text-display"]) assert.notEqual(desktop[k], mobile[k], `${k} should differ by scale`);
+});
+
+test("every type role is a Tailwind utility that also sets its line-height", async () => {
+  const sizes = ["caption", "control", "control-large", "body", "title", "display"];
+  const css = await buildCss({ candidates: [...sizes.map((r) => `text-topcoat-${r}`), "font-topcoat", "font-topcoat-mono", "font-topcoat-regular", "font-topcoat-medium", "font-topcoat-strong", "leading-topcoat-tight", "leading-topcoat-body", "leading-topcoat-caption"] });
+  for (const r of sizes) assert.match(css, new RegExp(`\\.text-topcoat-${r}\\s*\\{[^}]*font-size:[^}]*line-height:`), `text-topcoat-${r} needs font-size and line-height`);
+  for (const u of ["font-topcoat-mono", "font-topcoat-regular", "font-topcoat-medium", "font-topcoat-strong", "leading-topcoat-tight", "leading-topcoat-body", "leading-topcoat-caption"]) {
+    assert.ok(css.includes(`.${u} {`), `${u} missing`);
   }
 });

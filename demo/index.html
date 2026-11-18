@@ -6,9 +6,9 @@
   <title>tailwind-topcoat demo</title>
   <link rel="stylesheet" href="demo.css">
 </head>
-<body class="bg-topcoat-page font-topcoat text-topcoat-text m-0 p-4 sm:p-6">
+<body class="bg-topcoat-page font-topcoat text-topcoat-body text-topcoat-text m-0 p-4 sm:p-6">
   <header class="mb-6 flex flex-wrap items-center gap-4">
-    <h1 class="m-0 text-2xl font-light">tailwind-topcoat</h1>
+    <h1 class="m-0 text-topcoat-title font-topcoat-regular">tailwind-topcoat</h1>
     <div class="topcoat-button-bar" aria-label="Color scheme">
       <div class="topcoat-button-bar__item"><button class="topcoat-button-bar__button" data-set-scheme="light">Light</button></div>
       <div class="topcoat-button-bar__item"><button class="topcoat-button-bar__button" data-set-scheme="dark">Dark</button></div>
@@ -21,7 +21,7 @@
 
   <main class="grid gap-6 [grid-template-columns:repeat(auto-fit,minmax(18rem,1fr))]">
     <section class="grid content-start gap-3">
-      <h2 class="m-0 text-base font-semibold">Buttons</h2>
+      <h2 class="m-0 text-topcoat-body font-topcoat-strong">Buttons</h2>
       <div class="flex flex-wrap items-start gap-2">
         <button class="topcoat-button">Button</button>
         <button class="topcoat-button--quiet">Quiet</button>
@@ -52,7 +52,7 @@
     </section>
 
     <section class="grid content-start gap-3">
-      <h2 class="m-0 text-base font-semibold">Text fields</h2>
+      <h2 class="m-0 text-topcoat-body font-topcoat-strong">Text fields</h2>
       <input class="topcoat-text-input" placeholder="text" type="text">
       <input class="topcoat-text-input--large" placeholder="large text" type="text">
       <input class="topcoat-text-input" placeholder="disabled" type="text" disabled>
@@ -66,7 +66,7 @@
     </section>
 
     <section class="grid content-start gap-3">
-      <h2 class="m-0 text-base font-semibold">Selection</h2>
+      <h2 class="m-0 text-topcoat-body font-topcoat-strong">Selection</h2>
       <label class="topcoat-checkbox"><input type="checkbox" checked><div class="topcoat-checkbox__checkmark"></div> Checked</label>
       <label class="topcoat-checkbox"><input type="checkbox"><div class="topcoat-checkbox__checkmark"></div> Unchecked</label>
       <label class="topcoat-checkbox"><input type="checkbox" disabled><div class="topcoat-checkbox__checkmark"></div> Disabled</label>
@@ -83,7 +83,7 @@
     </section>
 
     <section class="grid content-start gap-3">
-      <h2 class="m-0 text-base font-semibold">Navigation and lists</h2>
+      <h2 class="m-0 text-topcoat-body font-topcoat-strong">Navigation and lists</h2>
       <div class="topcoat-navigation-bar">
         <div class="topcoat-navigation-bar__item w-full text-center"><h1 class="topcoat-navigation-bar__title">Header</h1></div>
       </div>
@@ -103,7 +103,7 @@
     </section>
 
     <section class="grid content-start gap-3">
-      <h2 class="m-0 text-base font-semibold">Toggle buttons, select, field</h2>
+      <h2 class="m-0 text-topcoat-body font-topcoat-strong">Toggle buttons, select, field</h2>
       <div class="flex flex-wrap items-start gap-2">
         <button class="topcoat-button" aria-pressed="true" data-demo-toggle>Pressed</button>
         <button class="topcoat-button" aria-pressed="false" data-demo-toggle>Not pressed</button>
@@ -132,6 +132,17 @@
         <span class="inline-block size-6 rounded-topcoat bg-topcoat-surface ring-2 ring-topcoat-highlight"></span>
         <span class="relative inline-block pt-8"><span class="topcoat-tooltip absolute left-1/2 top-0 -translate-x-1/2" role="tooltip">0.8</span><span class="topcoat-notification">value</span></span>
       </div>
+    </section>
+
+    <section class="grid content-start gap-2">
+      <h2 class="m-0 text-topcoat-body font-topcoat-strong">Typography</h2>
+      <p class="m-0 text-topcoat-display font-topcoat-regular">Display</p>
+      <p class="m-0 text-topcoat-title font-topcoat-medium">Title</p>
+      <p class="m-0 text-topcoat-body">Body: the quick brown fox jumps over the lazy dog.</p>
+      <p class="m-0 text-topcoat-control-large">Control large</p>
+      <p class="m-0 text-topcoat-control">Control</p>
+      <p class="m-0 text-topcoat-caption">Caption and help text</p>
+      <p class="m-0 text-topcoat-body"><span class="font-topcoat-regular">Regular</span> <span class="font-topcoat-medium">Medium</span> <span class="font-topcoat-strong">Strong</span> <code class="font-topcoat-mono text-topcoat-control">120.5 bpm</code></p>
     </section>
   </main>
 
