@@ -10,7 +10,7 @@ Recreate the look of [Topcoat](https://github.com/topcoat/topcoat) (a clean, sli
 plugin. The owner will use it for a demo web application and wants that aesthetic
 available as Tailwind-native primitives. Afterwards they want to build more complex
 primitives on top, so the foundation (tokens, structure) matters as much as the first
-15 components.
+14 components.
 
 It is a clean-room-style port, not a fork: new repo `tadger/tailwind-topcoat`
 (private for now), local folder `/Volumes/dev/tailwind-topcoat/`. Topcoat's compiled
