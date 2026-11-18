@@ -56,6 +56,9 @@
     --tc-nav-height: 2.5rem;
     --tc-nav-padding-x: 0.75rem;
     --tc-nav-title-size: 1rem;
+    --tc-select-arrow-size: 5px;
+    --tc-select-arrow-offset: 0.5rem;
+    --tc-select-arrow-gap: 0.375rem;
   }
 
   [data-topcoat="mobile"] {
@@ -105,6 +108,9 @@
     --tc-nav-height: 4.375rem;
     --tc-nav-padding-x: 1rem;
     --tc-nav-title-size: 1.3rem;
+    --tc-select-arrow-size: 8px;
+    --tc-select-arrow-offset: 1rem;
+    --tc-select-arrow-gap: 0.5rem;
   }
 
   /* ---- color (light default, dark via Tailwind's dark variant) ---- */
@@ -128,6 +134,8 @@
     --tc-input-bg-focus: #fff;
     --tc-text-strong: #454545;
     --tc-invalid: #ec514e;
+    --tc-invalid-text: #b42318;
+    --tc-highlight: #c26400;
     --tc-surface-sunken: #d6dcdb;
     --tc-selected-bg: #e5f1fb;
     --tc-dot-border: rgba(0, 0, 0, 0.1);
@@ -175,6 +183,8 @@
       --tc-input-bg-focus: #595b5b;
       --tc-text-strong: #fff;
       --tc-invalid: #ec514e;
+      --tc-invalid-text: #ffaca8;
+      --tc-highlight: #fbbf24;
       --tc-surface-sunken: #454646;
       --tc-selected-bg: #3f4041;
       --tc-dot-border: rgba(0, 0, 0, 0.05);
@@ -219,6 +229,8 @@
   --color-topcoat-focus: var(--tc-focus-border);
   --color-topcoat-focus-ring: var(--tc-focus-ring);
   --color-topcoat-invalid: var(--tc-invalid);
+  --color-topcoat-invalid-text: var(--tc-invalid-text);
+  --color-topcoat-highlight: var(--tc-highlight);
   --color-topcoat-selected: var(--tc-selected-bg);
   --radius-topcoat-pill: var(--tc-radius-pill);
   --shadow-topcoat-input: var(--tc-shadow-input);

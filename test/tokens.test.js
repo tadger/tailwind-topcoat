@@ -57,9 +57,17 @@ test("every role token is exposed as a Tailwind utility", async () => {
     "text-topcoat-strong", "text-topcoat-on-accent", "bg-topcoat-cta-hover", "bg-topcoat-cta-active",
     "border-topcoat-cta-border", "border-topcoat-focus", "bg-topcoat-focus-ring", "bg-topcoat-invalid",
     "bg-topcoat-selected", "rounded-topcoat-pill", "shadow-topcoat-input", "shadow-topcoat-search",
-    "shadow-topcoat-inset-active",
+    "shadow-topcoat-inset-active", "bg-topcoat-highlight", "ring-topcoat-highlight", "text-topcoat-invalid-text",
   ];
   const css = await buildCss({ candidates: utilities });
   const missing = utilities.filter((u) => !css.includes(`.${u} {`));
   assert.deepEqual(missing, []);
+});
+
+test("highlight and invalid-text tokens exist in both light and dark", async () => {
+  const { light, dark } = await collect();
+  for (const t of ["--tc-highlight", "--tc-invalid-text"]) {
+    assert.ok(light[t] && dark[t], `${t} must be defined in light and dark`);
+    assert.notEqual(light[t], dark[t], `${t} should differ between schemes`);
+  }
 });

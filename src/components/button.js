@@ -11,6 +11,7 @@ const all = [
   "topcoat-button-bar__button",
   "topcoat-button-bar__button--large",
 ];
+const toggles = all.filter((n) => !n.includes("cta"));
 const quietOnes = ["topcoat-button--quiet", "topcoat-button--large--quiet"];
 const cta = ["topcoat-button--cta", "topcoat-button--large--cta"];
 const large = all.filter((n) => n.includes("--large"));
@@ -27,6 +28,9 @@ const largeSize = {
 export default {
   [sel(all)]: { ...reset, padding: "0 var(--tc-padding-x)", lineHeight: "var(--tc-control-height)", ...raised },
   [sel(nonCta, ":hover")]: hoverFill,
+  // Toggle buttons: aria-pressed="true" looks selected. After :hover (selected stays selected under the
+  // pointer) and before :focus (the focus glow still shows on a selected button).
+  [sel(toggles, '[aria-pressed="true"]')]: pressed,
   [`${sel(all, ":focus")}, ${sel(quietOnes, ":hover:focus")}`]: focusGlow,
   [`${sel(pressable, ":active")}, :checked + .topcoat-button-bar__button`]: pressed,
   [sel(["topcoat-button--quiet"])]: quiet,

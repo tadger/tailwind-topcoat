@@ -1,0 +1,16 @@
+// Skin only: the consumer positions it (absolute/fixed, offsets, z-index) and shows or hides it.
+export default {
+  ".topcoat-tooltip": {
+    boxSizing: "border-box",
+    padding: "0.15em 0.5em 0.2em",
+    fontSize: "calc(var(--tc-font-size) * 0.85)",
+    lineHeight: "1.3",
+    whiteSpace: "nowrap",
+    pointerEvents: "none",
+    color: "var(--tc-text-strong)",
+    backgroundColor: "var(--tc-surface-raised)",
+    border: "1px solid var(--tc-border)",
+    borderRadius: "var(--tc-radius)",
+    boxShadow: "var(--tc-shadow-inset)",
+  },
+};

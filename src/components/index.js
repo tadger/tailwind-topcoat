@@ -13,5 +13,8 @@ import list from "./list.js";
 import navigationBar from "./navigation-bar.js";
 import tabBar from "./tab-bar.js";
 import notification from "./notification.js";
+import select from "./select.js";
+import field from "./field.js";
+import tooltip from "./tooltip.js";
 
-export default { ...button, ...iconButton, ...buttonBar, ...textInput, ...textarea, ...searchInput, ...checkbox, ...radioButton, ...switchComponent, ...range, ...list, ...navigationBar, ...tabBar, ...notification };
+export default { ...button, ...iconButton, ...buttonBar, ...textInput, ...textarea, ...searchInput, ...checkbox, ...radioButton, ...switchComponent, ...range, ...list, ...navigationBar, ...tabBar, ...notification, ...select, ...field, ...tooltip };

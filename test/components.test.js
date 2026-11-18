@@ -5,13 +5,14 @@ import { buildCss } from "./helpers/build.js";
 import { topdocClasses } from "./helpers/topdoc.js";
 
 // Tailwind v4 emits plugin components only for classes found in content, so feed it every topdoc class.
+const NEW_CLASSES = ["topcoat-select", "topcoat-select--large", "topcoat-field", "topcoat-field__label", "topcoat-field__message", "topcoat-field__message--invalid", "topcoat-tooltip"];
 const COMPONENTS = ["Button", "Icon Button", "Button Bar", "Text input", "Textarea", "Search Input", "Checkbox", "Radio Button", "Switch", "Range", "List", "Navigation Bar", "Tab Bar", "Notification"];
 
 const OVERRIDES = ["px-6", "p-2", "py-1", "rounded-none", "bg-red-500", "text-lg"];
 
 let css;
 before(async () => {
-  const candidates = COMPONENTS.flatMap((n) => [...topdocClasses(n)]);
+  const candidates = [...COMPONENTS.flatMap((n) => [...topdocClasses(n)]), ...NEW_CLASSES];
   css = await buildCss({ candidates: [...candidates, ...OVERRIDES] });
 });
 
@@ -80,4 +81,25 @@ test("range styles both webkit and moz thumbs and tracks", () => {
 
 test("toggle inputs are visually hidden by opacity, never display:none", () => {
   assert.doesNotMatch(css, /topcoat-(checkbox|radio-button|switch)[^{]*\{[^}]*display:\s*none/);
+});
+
+// ---- primitives requested by the loops drum machine ----
+const hasSelector = (frag) => {
+  let found = false;
+  postcss.parse(css).walkRules((r) => { if (r.selector.includes(frag)) found = true; });
+  return found;
+};
+
+test("covers the select, field and tooltip classes", () => {
+  const missing = [
+    "topcoat-select", "topcoat-select--large", "topcoat-field", "topcoat-field__label",
+    "topcoat-field__message", "topcoat-field__message--invalid", "topcoat-tooltip",
+  ].filter((c) => !hasSelector(`.${c}`));
+  assert.deepEqual(missing, []);
+});
+
+test("aria-pressed=true has a selected look on buttons and button bar segments", () => {
+  for (const c of ["topcoat-button", "topcoat-button--large", "topcoat-button-bar__button", "topcoat-button-bar__button--large"]) {
+    assert.ok(hasSelector(`.${c}[aria-pressed="true"]`), `${c}[aria-pressed="true"] missing`);
+  }
 });

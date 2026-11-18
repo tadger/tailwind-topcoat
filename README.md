@@ -23,7 +23,11 @@ Install from a path or git while the repo is private, e.g. `pnpm add ../tailwind
 `topcoat-button` (`--quiet`, `--large`, `--large--quiet`, `--cta`, `--large--cta`), `topcoat-icon-button`,
 `topcoat-button-bar`, `topcoat-checkbox`, `topcoat-radio-button`, `topcoat-switch`, `topcoat-range`,
 `topcoat-text-input`, `topcoat-textarea`, `topcoat-search-input`, `topcoat-list`, `topcoat-navigation-bar`,
-`topcoat-tab-bar`, `topcoat-notification`. See `demo/` for the markup of each.
+`topcoat-tab-bar`, `topcoat-notification`, `topcoat-select` (`--large`), `topcoat-field` (`__label`,
+`__message`, `__message--invalid`, or any `[role="alert"]` message), `topcoat-tooltip` (skin only; you position it).
+See `demo/` for the markup of each.
+
+Toggle buttons: a `topcoat-button` or button bar segment with `aria-pressed="true"` looks selected.
 
 Components sit in Tailwind's base layer, so any utility overrides them (`topcoat-button bg-red-500 px-6`).
 All of them are always in your CSS (about 7 KB gzipped); Tailwind's `prefix()` is not supported.
@@ -35,7 +39,8 @@ All of them are always in your CSS (about 7 KB gzipped); Tailwind's `prefix()` i
   inside a light page, give the wrapper `class="dark"` **and** a `data-topcoat` attribute.
 - **Mobile** sizes: add `data-topcoat="mobile"` to any ancestor (`data-topcoat="desktop"` switches back).
 - **Tokens** are `--tc-*` variables (see `theme.css`), also exposed as utilities: `bg-topcoat-surface`,
-  `text-topcoat-text`, `border-topcoat-border`, `rounded-topcoat`, `shadow-topcoat-inset`, and so on.
+  `text-topcoat-text`, `border-topcoat-border`, `rounded-topcoat`, `shadow-topcoat-inset`, `bg-topcoat-highlight`
+  (amber, for "this is happening now"), `text-topcoat-invalid-text`, and so on.
 
 ## Fixes over the original
 

@@ -40,6 +40,21 @@ test("demo renders every Topcoat class of every component", async () => {
   await page.close();
 });
 
+test("demo shows the select, field, tooltip, highlight and toggle-button primitives", async () => {
+  const { page } = await open();
+  const inDom = new Set(await page.$$eval("[class]", (els) => els.flatMap((e) => [...e.classList])));
+  const missing = ["topcoat-select", "topcoat-select--large", "topcoat-field", "topcoat-field__label", "topcoat-field__message", "topcoat-field__message--invalid", "topcoat-tooltip", "bg-topcoat-highlight", "ring-topcoat-highlight"].filter((c) => !inDom.has(c));
+  assert.deepEqual(missing, []);
+  assert.ok(await page.$('button.topcoat-button[aria-pressed="true"]'), "pressed toggle button");
+  assert.ok(await page.$('.topcoat-button-bar__button[aria-pressed="true"]'), "pressed bar segment");
+  assert.ok(await page.$('.topcoat-field__message[role="alert"]'), "alert message");
+  // Toggle buttons in the demo flip aria-pressed when clicked.
+  const before = await page.$eval("[data-demo-toggle]", (el) => el.getAttribute("aria-pressed"));
+  await page.click("[data-demo-toggle]");
+  assert.notEqual(await page.$eval("[data-demo-toggle]", (el) => el.getAttribute("aria-pressed")), before);
+  await page.close();
+});
+
 test("demo switches all four theme combinations and screenshots each", async () => {
   mkdirSync(`${root}test/screenshots`, { recursive: true });
   const { page } = await open();
