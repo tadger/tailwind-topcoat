@@ -38,6 +38,7 @@ export default {
   },
   ".topcoat-button-bar__button, .topcoat-button-bar__button--large": {
     borderRadius: "inherit",
+    width: "100%", // fill the table cell so neighbouring buttons touch
   },
   ".topcoat-button-bar__button:focus, .topcoat-button-bar__button--large:focus": {
     zIndex: "1",

@@ -1,0 +1,5 @@
+@import "tailwindcss";
+@import "../index.css";
+
+/* The demo flips dark mode with a class on <html>; apps can use the default media strategy instead. */
+@custom-variant dark (&:where(.dark, .dark *));

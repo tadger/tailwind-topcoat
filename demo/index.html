@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en" data-topcoat="desktop">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>tailwind-topcoat demo</title>
+  <link rel="stylesheet" href="demo.css">
+</head>
+<body class="bg-topcoat-page font-topcoat text-topcoat-text m-0 p-4 sm:p-6">
+  <header class="mb-6 flex flex-wrap items-center gap-4">
+    <h1 class="m-0 text-2xl font-light">tailwind-topcoat</h1>
+    <div class="topcoat-button-bar" aria-label="Color scheme">
+      <div class="topcoat-button-bar__item"><button class="topcoat-button-bar__button" data-set-scheme="light">Light</button></div>
+      <div class="topcoat-button-bar__item"><button class="topcoat-button-bar__button" data-set-scheme="dark">Dark</button></div>
+    </div>
+    <div class="topcoat-button-bar" aria-label="Scale">
+      <div class="topcoat-button-bar__item"><button class="topcoat-button-bar__button" data-set-scale="desktop">Desktop</button></div>
+      <div class="topcoat-button-bar__item"><button class="topcoat-button-bar__button" data-set-scale="mobile">Mobile</button></div>
+    </div>
+  </header>
+
+  <main class="grid gap-6 [grid-template-columns:repeat(auto-fit,minmax(18rem,1fr))]">
+    <section class="grid content-start gap-3">
+      <h2 class="m-0 text-base font-semibold">Buttons</h2>
+      <div class="flex flex-wrap items-start gap-2">
+        <button class="topcoat-button">Button</button>
+        <button class="topcoat-button--quiet">Quiet</button>
+        <button class="topcoat-button--cta">Call to action</button>
+        <button class="topcoat-button" disabled>Disabled</button>
+      </div>
+      <div class="flex flex-wrap items-start gap-2">
+        <button class="topcoat-button--large">Large</button>
+        <button class="topcoat-button--large--quiet">Large quiet</button>
+        <button class="topcoat-button--large--cta">Large CTA</button>
+      </div>
+      <div class="flex flex-wrap items-start gap-2">
+        <button class="topcoat-icon-button" aria-label="icon"><span class="topcoat-icon bg-topcoat-text-muted"></span></button>
+        <button class="topcoat-icon-button--quiet" aria-label="icon"><span class="topcoat-icon bg-topcoat-text-muted"></span></button>
+        <button class="topcoat-icon-button--large" aria-label="icon"><span class="topcoat-icon--large bg-topcoat-text-muted"></span></button>
+        <button class="topcoat-icon-button--large--quiet" aria-label="icon"><span class="topcoat-icon--large bg-topcoat-text-muted"></span></button>
+      </div>
+      <div class="topcoat-button-bar">
+        <div class="topcoat-button-bar__item"><button class="topcoat-button-bar__button">One</button></div>
+        <div class="topcoat-button-bar__item"><button class="topcoat-button-bar__button">Two</button></div>
+        <div class="topcoat-button-bar__item"><button class="topcoat-button-bar__button">Three</button></div>
+      </div>
+      <div class="topcoat-button-bar">
+        <div class="topcoat-button-bar__item"><button class="topcoat-button-bar__button--large">One</button></div>
+        <div class="topcoat-button-bar__item"><button class="topcoat-button-bar__button--large">Two</button></div>
+      </div>
+      <p class="m-0">Notifications <span class="topcoat-notification">1</span> <span class="topcoat-notification">42</span></p>
+    </section>
+
+    <section class="grid content-start gap-3">
+      <h2 class="m-0 text-base font-semibold">Text fields</h2>
+      <input class="topcoat-text-input" placeholder="text" type="text">
+      <input class="topcoat-text-input--large" placeholder="large text" type="text">
+      <input class="topcoat-text-input" placeholder="disabled" type="text" disabled>
+      <input class="topcoat-text-input" placeholder="invalid (type then blur)" type="email" value="nope">
+      <input class="topcoat-search-input" type="search" placeholder="search">
+      <input class="topcoat-search-input" type="search" placeholder="search" value="typed query">
+      <input class="topcoat-search-input--large" type="search" placeholder="large search">
+      <input class="topcoat-search-input" type="search" placeholder="disabled" disabled>
+      <textarea class="topcoat-textarea" rows="3" placeholder="textarea"></textarea>
+      <textarea class="topcoat-textarea--large" rows="3" placeholder="large textarea"></textarea>
+    </section>
+
+    <section class="grid content-start gap-3">
+      <h2 class="m-0 text-base font-semibold">Selection</h2>
+      <label class="topcoat-checkbox"><input type="checkbox" checked><div class="topcoat-checkbox__checkmark"></div> Checked</label>
+      <label class="topcoat-checkbox"><input type="checkbox"><div class="topcoat-checkbox__checkmark"></div> Unchecked</label>
+      <label class="topcoat-checkbox"><input type="checkbox" disabled><div class="topcoat-checkbox__checkmark"></div> Disabled</label>
+      <label class="topcoat-radio-button"><input type="radio" name="demo-r" checked><div class="topcoat-radio-button__checkmark"></div> One</label>
+      <label class="topcoat-radio-button"><input type="radio" name="demo-r"><div class="topcoat-radio-button__checkmark"></div> Two</label>
+      <label class="topcoat-radio-button"><input type="radio" name="demo-r2" disabled><div class="topcoat-radio-button__checkmark"></div> Disabled</label>
+      <div class="flex gap-3">
+        <label class="topcoat-switch"><input type="checkbox" class="topcoat-switch__input"><div class="topcoat-switch__toggle"></div></label>
+        <label class="topcoat-switch"><input type="checkbox" class="topcoat-switch__input" checked><div class="topcoat-switch__toggle"></div></label>
+        <label class="topcoat-switch"><input type="checkbox" class="topcoat-switch__input" disabled><div class="topcoat-switch__toggle"></div></label>
+      </div>
+      <input type="range" class="topcoat-range">
+      <input type="range" class="topcoat-range" disabled>
+    </section>
+
+    <section class="grid content-start gap-3">
+      <h2 class="m-0 text-base font-semibold">Navigation and lists</h2>
+      <div class="topcoat-navigation-bar">
+        <div class="topcoat-navigation-bar__item w-full text-center"><h1 class="topcoat-navigation-bar__title">Header</h1></div>
+      </div>
+      <div class="topcoat-list">
+        <h3 class="topcoat-list__header">Category</h3>
+        <ul class="topcoat-list__container">
+          <li class="topcoat-list__item">Item one</li>
+          <li class="topcoat-list__item">Item two</li>
+          <li class="topcoat-list__item">Item three</li>
+        </ul>
+      </div>
+      <div class="topcoat-tab-bar w-full">
+        <label class="topcoat-tab-bar__item"><input type="radio" name="demo-t" checked><button class="topcoat-tab-bar__button">One</button></label>
+        <label class="topcoat-tab-bar__item"><input type="radio" name="demo-t"><button class="topcoat-tab-bar__button">Two</button></label>
+        <label class="topcoat-tab-bar__item"><input type="radio" name="demo-t"><button class="topcoat-tab-bar__button">Three</button></label>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const root = document.documentElement;
+    const set = {
+      scheme: (v) => root.classList.toggle("dark", v === "dark"),
+      scale: (v) => root.setAttribute("data-topcoat", v),
+    };
+    const params = new URLSearchParams(location.search);
+    for (const k of ["scheme", "scale"]) if (params.has(k)) set[k](params.get(k));
+    document.addEventListener("click", (e) => {
+      for (const k of ["scheme", "scale"]) {
+        const v = e.target.closest(`[data-set-${k}]`)?.dataset[`set${k[0].toUpperCase()}${k.slice(1)}`];
+        if (v) set[k](v);
+      }
+    });
+  </script>
+</body>
+</html>

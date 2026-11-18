@@ -83,3 +83,17 @@ test("nested scopes: mobile inside desktop and desktop inside mobile affect only
   assert.ok(mobileH > desktopH * 1.5);
   await b.close();
 });
+
+test("button bar buttons touch their neighbours (no gaps between segments)", async () => {
+  const html = `<div class="topcoat-button-bar" style="width:300px">
+    <div class="topcoat-button-bar__item"><button class="topcoat-button-bar__button">One</button></div>
+    <div class="topcoat-button-bar__item"><button class="topcoat-button-bar__button">A longer label</button></div>
+    <div class="topcoat-button-bar__item"><button class="topcoat-button-bar__button">C</button></div>
+  </div>`;
+  const { page, close } = await renderPage(html);
+  const rects = await page.$$eval(".topcoat-button-bar__button", (els) => els.map((e) => e.getBoundingClientRect()).map((r) => ({ l: r.left, r: r.right })));
+  for (let i = 0; i < rects.length - 1; i++) {
+    assert.ok(Math.abs(rects[i].r - rects[i + 1].l) <= 1.5, `gap between segment ${i} and ${i + 1}: ${rects[i + 1].l - rects[i].r}px`);
+  }
+  await close();
+});

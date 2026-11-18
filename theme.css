@@ -110,6 +110,7 @@
   /* ---- color (light default, dark via Tailwind's dark variant) ---- */
   :root {
     --tc-font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --tc-page-bg: #dfe2e2;
     --tc-text: #454545;
     --tc-text-muted: #c6c8c8;
     --tc-text-on-accent: #fff;
@@ -148,6 +149,7 @@
 
     @variant dark {
       --tc-font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      --tc-page-bg: #4b4d4e;
       --tc-text: #c6c8c8;
       --tc-text-muted: #737373;
       --tc-text-on-accent: #fff;
@@ -189,6 +191,8 @@
 
 /* Expose a subset to Tailwind utilities; `inline` keeps them live with the variables. */
 @theme inline {
+  --color-topcoat-page: var(--tc-page-bg);
+  --font-topcoat: var(--tc-font-family);
   --color-topcoat-surface: var(--tc-surface);
   --color-topcoat-surface-raised: var(--tc-surface-raised);
   --color-topcoat-text: var(--tc-text);
