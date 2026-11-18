@@ -1,0 +1,31 @@
+{
+  "name": "tailwind-topcoat",
+  "version": "0.1.0",
+  "description": "Topcoat's look as a Tailwind CSS v4 plugin",
+  "type": "module",
+  "license": "Apache-2.0",
+  "private": true,
+  "style": "./index.css",
+  "exports": {
+    ".": "./index.css",
+    "./plugin": "./src/index.js"
+  },
+  "files": [
+    "index.css",
+    "theme.css",
+    "src"
+  ],
+  "scripts": {
+    "reference": "sh scripts/fetch-reference.sh",
+    "test": "node --test test/*.test.js",
+    "test:browser": "node --test test/browser/*.test.js",
+    "build:demo": "sh scripts/build-demo.sh"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "~4.3.5",
+    "@tailwindcss/node": "~4.3.5",
+    "playwright": "^1.65.1",
+    "postcss": "^8.5.33",
+    "tailwindcss": "~4.3.5"
+  }
+}
