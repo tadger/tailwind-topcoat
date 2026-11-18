@@ -9,6 +9,7 @@ export const reset = {
   display: "inline-block",
   verticalAlign: "top",
   boxSizing: "border-box",
+  maxWidth: "100%",
   backgroundClip: "padding-box",
   padding: "0",
   margin: "0",

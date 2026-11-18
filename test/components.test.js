@@ -5,7 +5,7 @@ import { buildCss } from "./helpers/build.js";
 import { topdocClasses } from "./helpers/topdoc.js";
 
 // Tailwind v4 emits plugin components only for classes found in content, so feed it every topdoc class.
-const COMPONENTS = ["Button", "Icon Button", "Button Bar", "Text input", "Textarea", "Search Input", "Checkbox", "Radio Button", "Switch", "Range"];
+const COMPONENTS = ["Button", "Icon Button", "Button Bar", "Text input", "Textarea", "Search Input", "Checkbox", "Radio Button", "Switch", "Range", "List", "Navigation Bar", "Tab Bar", "Notification"];
 
 const OVERRIDES = ["px-6", "p-2", "py-1", "rounded-none", "bg-red-500", "text-lg"];
 

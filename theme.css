@@ -51,6 +51,11 @@
     --tc-switch-thumb-offset-on: 1.85rem;
     --tc-range-track-height: 0.5rem;
     --tc-range-thumb-width: 0.75rem;
+    --tc-list-item-padding: 0.75rem;
+    --tc-list-header-padding-x: 0.75rem;
+    --tc-nav-height: 2.5rem;
+    --tc-nav-padding-x: 0.75rem;
+    --tc-nav-title-size: 1rem;
   }
 
   [data-topcoat="mobile"] {
@@ -95,6 +100,11 @@
     --tc-switch-thumb-offset-on: 2.7rem;
     --tc-range-track-height: 1rem;
     --tc-range-thumb-width: 2rem;
+    --tc-list-item-padding: 1.25rem;
+    --tc-list-header-padding-x: 1.25rem;
+    --tc-nav-height: 4.375rem;
+    --tc-nav-padding-x: 1rem;
+    --tc-nav-title-size: 1.3rem;
   }
 
   /* ---- color (light default, dark via Tailwind's dark variant) ---- */
@@ -118,9 +128,14 @@
     --tc-text-strong: #454545;
     --tc-invalid: #ec514e;
     --tc-surface-sunken: #d6dcdb;
-    --tc-switch-on-bg: #e5f1fb;
+    --tc-selected-bg: #e5f1fb;
     --tc-dot-border: rgba(0, 0, 0, 0.1);
     --tc-dot-shadow: 0 1px rgba(255, 255, 255, 0.5);
+    --tc-list-bg: #e5e9e8;
+    --tc-edge-highlight: #fff;
+    --tc-edge-first: #d6dcdb;
+    --tc-header-edge-top: rgba(255, 255, 255, 0.5);
+    --tc-header-edge-bottom: rgba(255, 255, 255, 0.23);
     --tc-search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23c6c8c8' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='6.5' cy='6.5' r='4.75'/%3E%3Cpath d='M10.2 10.2L14.5 14.5'/%3E%3C/svg%3E");
     --tc-cta-bg: #288edf;
     --tc-cta-bg-hover: #4ca1e4;
@@ -151,9 +166,14 @@
       --tc-text-strong: #fff;
       --tc-invalid: #ec514e;
       --tc-surface-sunken: #454646;
-      --tc-switch-on-bg: #3f4041;
+      --tc-selected-bg: #3f4041;
       --tc-dot-border: rgba(0, 0, 0, 0.05);
       --tc-dot-shadow: 0 1px rgba(255, 255, 255, 0.1);
+      --tc-list-bg: #454646;
+      --tc-edge-highlight: #616363;
+      --tc-edge-first: rgba(0, 0, 0, 0.05);
+      --tc-header-edge-top: rgba(255, 255, 255, 0.1);
+      --tc-header-edge-bottom: rgba(255, 255, 255, 0.05);
       --tc-search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23c6c8c8' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='6.5' cy='6.5' r='4.75'/%3E%3Cpath d='M10.2 10.2L14.5 14.5'/%3E%3C/svg%3E");
       --tc-cta-bg: #288edf;
       --tc-cta-bg-hover: #4ca1e4;

@@ -1,0 +1,42 @@
+// Topcoat shipped List only in its mobile builds; here it follows the --tc-list-* scale tokens on both scales.
+export default {
+  ".topcoat-list": {
+    margin: "0",
+    padding: "0",
+    font: "inherit",
+    color: "inherit",
+    border: "none",
+    cursor: "default",
+    userSelect: "none",
+    overflow: "auto",
+    borderTop: "1px solid var(--tc-border)",
+    borderBottom: "1px solid var(--tc-edge-highlight)",
+    backgroundColor: "var(--tc-list-bg)",
+  },
+  ".topcoat-list__header": {
+    margin: "0",
+    padding: "4px var(--tc-list-header-padding-x)",
+    fontSize: "0.9em",
+    fontWeight: "400",
+    backgroundColor: "var(--tc-surface-active)",
+    color: "var(--tc-text)",
+    textShadow: "0 1px 0 var(--tc-header-edge-top)",
+    borderTop: "1px solid var(--tc-header-edge-top)",
+    borderBottom: "1px solid var(--tc-header-edge-bottom)",
+  },
+  ".topcoat-list__container": {
+    margin: "0",
+    padding: "0",
+    listStyleType: "none",
+    borderTop: "1px solid var(--tc-border)",
+    color: "var(--tc-text)",
+  },
+  ".topcoat-list__item": {
+    margin: "0",
+    padding: "var(--tc-list-item-padding)",
+    overflowWrap: "anywhere",
+    borderTop: "1px solid var(--tc-edge-highlight)",
+    borderBottom: "1px solid var(--tc-border)",
+    "&:first-child": { borderTop: "1px solid var(--tc-edge-first)" },
+  },
+};

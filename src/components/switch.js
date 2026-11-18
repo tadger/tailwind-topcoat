@@ -51,7 +51,7 @@ export default {
     "&::before": {
       content: "'ON'",
       color: "var(--tc-cta-bg)",
-      backgroundColor: "var(--tc-switch-on-bg)",
+      backgroundColor: "var(--tc-selected-bg)",
       right: "var(--tc-switch-on-right)",
       paddingLeft: "var(--tc-switch-on-pad)",
     },

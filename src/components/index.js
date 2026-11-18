@@ -9,5 +9,9 @@ import checkbox from "./checkbox.js";
 import radioButton from "./radio-button.js";
 import switchComponent from "./switch.js";
 import range from "./range.js";
+import list from "./list.js";
+import navigationBar from "./navigation-bar.js";
+import tabBar from "./tab-bar.js";
+import notification from "./notification.js";
 
-export default { ...button, ...iconButton, ...buttonBar, ...textInput, ...textarea, ...searchInput, ...checkbox, ...radioButton, ...switchComponent, ...range };
+export default { ...button, ...iconButton, ...buttonBar, ...textInput, ...textarea, ...searchInput, ...checkbox, ...radioButton, ...switchComponent, ...range, ...list, ...navigationBar, ...tabBar, ...notification };
