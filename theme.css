@@ -1,2 +1,98 @@
+/*
+ * tailwind-topcoat design tokens.
+ *
+ * Scale tokens (desktop / mobile) and color tokens (light / dark) are orthogonal:
+ *   - color:  :root, switched by Tailwind's `dark` variant
+ *   - scale:  data-topcoat="desktop" (default) | "mobile" on any ancestor
+ * Components read only these variables.
+ */
 @layer base {
+  /* ---- scale ---- */
+  :root,
+  [data-topcoat="desktop"] {
+    --tc-font-size: 12px;
+    --tc-font-size-large: 0.875rem;
+    --tc-font-weight-large: 600;
+    --tc-letter-spacing: 0;
+    --tc-control-height: 1.313rem;
+    --tc-control-height-large: 1.688rem;
+    --tc-padding-x: 0.563rem;
+    --tc-padding-x-large: 0.875rem;
+    --tc-radius: 4px;
+    --tc-radius-pill: 15px;
+  }
+
+  [data-topcoat="mobile"] {
+    --tc-font-size: 16px;
+    --tc-font-size-large: 1.3rem;
+    --tc-font-weight-large: 400;
+    --tc-letter-spacing: 1px;
+    --tc-control-height: 3rem;
+    --tc-control-height-large: 4.375rem;
+    --tc-padding-x: 1.25rem;
+    --tc-padding-x-large: 1.25rem;
+    --tc-radius: 6px;
+    --tc-radius-pill: 40px;
+  }
+
+  /* ---- color (light default, dark via Tailwind's dark variant) ---- */
+  :root {
+    --tc-font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --tc-text: #454545;
+    --tc-text-muted: #c6c8c8;
+    --tc-text-on-accent: #fff;
+    --tc-text-shadow: 0 1px #fff;
+    --tc-surface: #fff;
+    --tc-surface-raised: #e5e9e8;
+    --tc-surface-hover: #eff1f1;
+    --tc-surface-active: #d2d6d6;
+    --tc-border: #9daca9;
+    --tc-shadow-inset: inset 0 1px #fff;
+    --tc-shadow-inset-active: inset 0 1px rgba(0, 0, 0, 0.1);
+    --tc-shadow-input: inset 0 1px rgba(0, 0, 0, 0.23);
+    --tc-cta-bg: #288edf;
+    --tc-cta-bg-hover: #4ca1e4;
+    --tc-cta-bg-active: #1e7dc8;
+    --tc-cta-border: #134f7f;
+    --tc-focus-border: #0036ff;
+    --tc-focus-ring: #6fb5f1;
+    --tc-focus-inset: inset 0 1px rgba(255, 255, 255, 0.36);
+    --tc-disabled-opacity: 0.3;
+
+    @variant dark {
+      --tc-font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      --tc-text: #c6c8c8;
+      --tc-text-muted: #737373;
+      --tc-text-on-accent: #fff;
+      --tc-text-shadow: 0 -1px rgba(0, 0, 0, 0.69);
+      --tc-surface: #3f4041;
+      --tc-surface-raised: #595b5b;
+      --tc-surface-hover: #626465;
+      --tc-surface-active: #3f4041;
+      --tc-border: #333434;
+      --tc-shadow-inset: inset 0 1px #737373;
+      --tc-shadow-inset-active: inset 0 1px rgba(0, 0, 0, 0.05);
+      --tc-shadow-input: inset 0 1px rgba(0, 0, 0, 0.05);
+      --tc-cta-bg: #288edf;
+      --tc-cta-bg-hover: #4ca1e4;
+      --tc-cta-bg-active: #1e7dc8;
+      --tc-cta-border: #134f7f;
+      --tc-focus-border: #0036ff;
+      --tc-focus-ring: #6fb5f1;
+      --tc-focus-inset: inset 0 1px rgba(255, 255, 255, 0.36);
+      --tc-disabled-opacity: 0.3;
+    }
+  }
+}
+
+/* Expose a subset to Tailwind utilities; `inline` keeps them live with the variables. */
+@theme inline {
+  --color-topcoat-surface: var(--tc-surface);
+  --color-topcoat-surface-raised: var(--tc-surface-raised);
+  --color-topcoat-text: var(--tc-text);
+  --color-topcoat-text-muted: var(--tc-text-muted);
+  --color-topcoat-border: var(--tc-border);
+  --color-topcoat-cta: var(--tc-cta-bg);
+  --radius-topcoat: var(--tc-radius);
+  --shadow-topcoat-inset: var(--tc-shadow-inset);
 }
