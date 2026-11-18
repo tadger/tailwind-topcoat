@@ -5,7 +5,7 @@ import { buildCss } from "./helpers/build.js";
 import { topdocClasses } from "./helpers/topdoc.js";
 
 // Tailwind v4 emits plugin components only for classes found in content, so feed it every topdoc class.
-const COMPONENTS = ["Button", "Icon Button", "Button Bar"];
+const COMPONENTS = ["Button", "Icon Button", "Button Bar", "Text input", "Textarea", "Search Input"];
 
 const OVERRIDES = ["px-6", "p-2", "py-1", "rounded-none", "bg-red-500", "text-lg"];
 
@@ -48,4 +48,23 @@ test("utilities override components (they are emitted after every topcoat rule)"
     assert.ok(at !== -1, `.${u} not emitted`);
     assert.ok(at > lastTopcoat, `.${u} must come after component rules`);
   }
+});
+
+test("search input padding is derived from the icon variables, not hard-coded", () => {
+  const m = css.match(/padding-inline-start:\s*([^;]+);/g) ?? [];
+  const derived = m.find((d) => d.includes("var(--tc-search-icon-offset)") && d.includes("var(--tc-search-icon-size)") && d.includes("var(--tc-search-icon-gap)"));
+  assert.ok(derived, "padding-inline-start must be calc() of offset + size + gap");
+});
+
+test("search cancel button is visible and keeps clearance from the text", () => {
+  let rule;
+  postcss.parse(css).walkRules((r) => {
+    if (r.selector.includes("topcoat-search-input") && r.selector.includes("::-webkit-search-cancel-button")) rule = r;
+    if (r.selector.trim() === "&::-webkit-search-cancel-button" && r.parent?.selector?.includes("topcoat-search-input")) rule = r;
+  });
+  assert.ok(rule, "cancel-button rule missing");
+  const d = Object.fromEntries(rule.nodes.filter((n) => n.type === "decl").map((n) => [n.prop, n.value]));
+  assert.notEqual(d.width, "0");
+  assert.match(d["background-image"] ?? "", /svg/, "needs a visible clear icon");
+  assert.match(d["margin-inline"] ?? "", /\S+\s+\S*[1-9]/, "needs a non-zero end margin");
 });

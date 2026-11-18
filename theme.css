@@ -23,6 +23,15 @@
     --tc-icon-button-padding-x: 0.25rem;
     --tc-icon-size: 0.81406rem;
     --tc-icon-size-large: 1.06344rem;
+    --tc-textarea-padding: 1rem;
+    --tc-textarea-font-size: 1rem;
+    --tc-textarea-font-size-large: 1.3rem;
+    --tc-search-icon-size: 12px;
+    --tc-search-icon-offset: 0.625rem;
+    --tc-search-icon-gap: 0.375rem;
+    --tc-search-icon-size-large: 12px;
+    --tc-search-icon-offset-large: 0.625rem;
+    --tc-search-icon-gap-large: 0.375rem;
   }
 
   [data-topcoat="mobile"] {
@@ -39,6 +48,15 @@
     --tc-icon-button-padding-x: 0.75rem;
     --tc-icon-size: 1.62rem;
     --tc-icon-size-large: 2.5rem;
+    --tc-textarea-padding: 2rem;
+    --tc-textarea-font-size: 2.5rem;
+    --tc-textarea-font-size-large: 3rem;
+    --tc-search-icon-size: 16px;
+    --tc-search-icon-offset: 1rem;
+    --tc-search-icon-gap: 0.5rem;
+    --tc-search-icon-size-large: 1.3rem;
+    --tc-search-icon-offset-large: 1.2rem;
+    --tc-search-icon-gap-large: 0.5rem;
   }
 
   /* ---- color (light default, dark via Tailwind's dark variant) ---- */
@@ -55,7 +73,13 @@
     --tc-border: #9daca9;
     --tc-shadow-inset: inset 0 1px #fff;
     --tc-shadow-inset-active: inset 0 1px rgba(0, 0, 0, 0.1);
-    --tc-shadow-input: inset 0 1px rgba(0, 0, 0, 0.23);
+    --tc-shadow-input: inset 0 1px rgba(0, 0, 0, 0.1);
+    --tc-shadow-search: inset 0 1px 0 rgba(0, 0, 0, 0.23);
+    --tc-input-bg: #fff;
+    --tc-input-bg-focus: #fff;
+    --tc-text-strong: #454545;
+    --tc-invalid: #ec514e;
+    --tc-search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23c6c8c8' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='6.5' cy='6.5' r='4.75'/%3E%3Cpath d='M10.2 10.2L14.5 14.5'/%3E%3C/svg%3E");
     --tc-cta-bg: #288edf;
     --tc-cta-bg-hover: #4ca1e4;
     --tc-cta-bg-active: #1e7dc8;
@@ -79,6 +103,12 @@
       --tc-shadow-inset: inset 0 1px #737373;
       --tc-shadow-inset-active: inset 0 1px rgba(0, 0, 0, 0.05);
       --tc-shadow-input: inset 0 1px rgba(0, 0, 0, 0.05);
+      --tc-shadow-search: inset 0 1px 0 rgba(0, 0, 0, 0.23);
+      --tc-input-bg: #454646;
+      --tc-input-bg-focus: #595b5b;
+      --tc-text-strong: #fff;
+      --tc-invalid: #ec514e;
+      --tc-search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23c6c8c8' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='6.5' cy='6.5' r='4.75'/%3E%3Cpath d='M10.2 10.2L14.5 14.5'/%3E%3C/svg%3E");
       --tc-cta-bg: #288edf;
       --tc-cta-bg-hover: #4ca1e4;
       --tc-cta-bg-active: #1e7dc8;
