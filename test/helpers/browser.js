@@ -23,6 +23,7 @@ export async function renderPage(html, { scheme = "light", scale = "desktop", di
   const browser = await getBrowser();
   const context = await browser.newContext({ colorScheme: scheme, viewport: { width, height: 800 } });
   const page = await context.newPage();
+  page.setDefaultTimeout(3000);
   const scaleAttr = scale === "mobile" ? ' data-topcoat="mobile"' : "";
   await page.setContent(
     `<!doctype html><html dir="${dir}"><head><meta charset="utf-8"><style>${css}</style></head>` +

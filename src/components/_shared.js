@@ -73,3 +73,15 @@ export const quietPressed = {
   textShadow: "var(--tc-text-shadow)",
   ...pressed,
 };
+
+/** Native input kept focusable and clickable but invisible; the sibling element draws the control. */
+export const hiddenInput = {
+  position: "absolute",
+  overflow: "hidden",
+  padding: "0",
+  border: "0",
+  opacity: "0.001",
+  zIndex: "1",
+  verticalAlign: "top",
+  outline: "none",
+};

@@ -5,7 +5,7 @@ import { buildCss } from "./helpers/build.js";
 import { topdocClasses } from "./helpers/topdoc.js";
 
 // Tailwind v4 emits plugin components only for classes found in content, so feed it every topdoc class.
-const COMPONENTS = ["Button", "Icon Button", "Button Bar", "Text input", "Textarea", "Search Input"];
+const COMPONENTS = ["Button", "Icon Button", "Button Bar", "Text input", "Textarea", "Search Input", "Checkbox", "Radio Button", "Switch", "Range"];
 
 const OVERRIDES = ["px-6", "p-2", "py-1", "rounded-none", "bg-red-500", "text-lg"];
 
@@ -67,4 +67,14 @@ test("search cancel button is visible and keeps clearance from the text", () => 
   assert.notEqual(d.width, "0");
   assert.match(d["background-image"] ?? "", /svg/, "needs a visible clear icon");
   assert.match(d["margin-inline"] ?? "", /\S+\s+\S*[1-9]/, "needs a non-zero end margin");
+});
+
+test("range styles both webkit and moz thumbs and tracks", () => {
+  for (const frag of ["::-webkit-slider-thumb", "::-moz-range-thumb", "::-moz-range-track"]) {
+    assert.ok(css.includes(frag), `missing ${frag}`);
+  }
+});
+
+test("toggle inputs are visually hidden by opacity, never display:none", () => {
+  assert.doesNotMatch(css, /topcoat-(checkbox|radio-button|switch)[^{]*\{[^}]*display:\s*none/);
 });
