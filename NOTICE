@@ -1,0 +1,8 @@
+tailwind-topcoat
+Copyright 2026 Jared Donaldson. Licensed under the Apache License, Version 2.0 (see LICENSE).
+
+This project recreates the look and the class naming of Topcoat
+(https://github.com/topcoat/topcoat), version 0.8.0, which is licensed under the
+Apache License, Version 2.0. Topcoat is a trademark/project of its authors
+(Adobe Systems Incorporated and contributors). No Topcoat source files, images or
+fonts are included here; its compiled CSS was used only as a visual reference.
