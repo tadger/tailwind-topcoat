@@ -134,8 +134,9 @@
     --tc-input-bg-focus: #fff;
     --tc-text-strong: #454545;
     --tc-invalid: #ec514e;
-    --tc-invalid-text: #b42318;
-    --tc-highlight: #c26400;
+    --tc-invalid-text: #a61e15;
+    --tc-highlight: #b35c00;
+    --tc-text-on-highlight: #fff;
     --tc-surface-sunken: #d6dcdb;
     --tc-selected-bg: #e5f1fb;
     --tc-dot-border: rgba(0, 0, 0, 0.1);
@@ -183,8 +184,9 @@
       --tc-input-bg-focus: #595b5b;
       --tc-text-strong: #fff;
       --tc-invalid: #ec514e;
-      --tc-invalid-text: #ffaca8;
+      --tc-invalid-text: #ffcdca;
       --tc-highlight: #fbbf24;
+      --tc-text-on-highlight: #1a1a1a;
       --tc-surface-sunken: #454646;
       --tc-selected-bg: #3f4041;
       --tc-dot-border: rgba(0, 0, 0, 0.05);
@@ -231,6 +233,7 @@
   --color-topcoat-invalid: var(--tc-invalid);
   --color-topcoat-invalid-text: var(--tc-invalid-text);
   --color-topcoat-highlight: var(--tc-highlight);
+  --color-topcoat-on-highlight: var(--tc-text-on-highlight);
   --color-topcoat-selected: var(--tc-selected-bg);
   --radius-topcoat-pill: var(--tc-radius-pill);
   --shadow-topcoat-input: var(--tc-shadow-input);

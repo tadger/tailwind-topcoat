@@ -47,7 +47,7 @@ export default {
   },
   [sel(all, ":focus")]: { ...fieldFocus, boxShadow: "0 0 0 2px var(--tc-focus-ring)" },
   [sel(all, ":disabled")]: disabledField,
-  [sel(all, ":invalid")]: { border: "1px solid var(--tc-invalid)" },
+  [`${sel(all, ":invalid")}, ${sel(all, '[aria-invalid="true"]')}`]: { border: "1px solid var(--tc-invalid)" },
   [sel(["topcoat-text-input--large"])]: {
     lineHeight: "var(--tc-control-height-large)",
     fontSize: "var(--tc-font-size-large)",

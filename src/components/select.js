@@ -38,9 +38,12 @@ export default {
   },
   [sel(all, ":focus")]: { ...fieldFocus, boxShadow: "0 0 0 2px var(--tc-focus-ring)" },
   [sel(all, ":disabled")]: disabledField,
+  [`${sel(all, ":invalid")}, ${sel(all, '[aria-invalid="true"]')}`]: { border: "1px solid var(--tc-invalid)" },
   [sel(["topcoat-select--large"])]: {
     height: "calc(var(--tc-control-height-large) + 2px)",
     lineHeight: "var(--tc-control-height-large)",
     fontSize: "var(--tc-font-size-large)",
   },
+  // Forced-colors / high-contrast modes drop background images; give the native arrow back.
+  "@media (forced-colors: active)": { [sel(all)]: { appearance: "auto" } },
 };

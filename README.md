@@ -27,10 +27,16 @@ Install from a path or git while the repo is private, e.g. `pnpm add ../tailwind
 `__message`, `__message--invalid`, or any `[role="alert"]` message), `topcoat-tooltip` (skin only; you position it).
 See `demo/` for the markup of each.
 
-Toggle buttons: a `topcoat-button` or button bar segment with `aria-pressed="true"` looks selected.
+Toggle buttons: a button, quiet/large button, icon button or button bar segment with `aria-pressed="true"` looks
+selected (`--cta` buttons are not affected; `aria-pressed="mixed"` is treated as unpressed).
+
+Notes: `topcoat-select` and `topcoat-search-input` need the `dir` attribute (not just CSS `direction`) for
+right-to-left. Use `ps-*` rather than `px-*` to change a select's text inset, or the chevron loses its clearance.
+A `topcoat-field` keeps controls at their natural width; add `w-full` to stretch. If the field is a wrapping
+`<label>`, wrap the caption in `<span class="topcoat-field__label">` so it gets the label styling.
 
 Components sit in Tailwind's base layer, so any utility overrides them (`topcoat-button bg-red-500 px-6`).
-All of them are always in your CSS (about 7 KB gzipped); Tailwind's `prefix()` is not supported.
+All of them are always in your CSS (about 5 KB gzipped); Tailwind's `prefix()` is not supported.
 
 ## Themes
 
@@ -40,7 +46,7 @@ All of them are always in your CSS (about 7 KB gzipped); Tailwind's `prefix()` i
 - **Mobile** sizes: add `data-topcoat="mobile"` to any ancestor (`data-topcoat="desktop"` switches back).
 - **Tokens** are `--tc-*` variables (see `theme.css`), also exposed as utilities: `bg-topcoat-surface`,
   `text-topcoat-text`, `border-topcoat-border`, `rounded-topcoat`, `shadow-topcoat-inset`, `bg-topcoat-highlight`
-  (amber, for "this is happening now"), `text-topcoat-invalid-text`, and so on.
+  (amber, for "this is happening now"; put `text-topcoat-on-highlight` on text over a fill), `text-topcoat-invalid-text`, and so on.
 
 ## Fixes over the original
 

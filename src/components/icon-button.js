@@ -13,10 +13,12 @@ export default {
     verticalAlign: "baseline",
   },
   [sel(all, ":hover")]: hoverFill,
+  [sel(all, '[aria-pressed="true"]')]: pressed,
   [`${sel(all, ":focus")}, ${sel(quietOnes, ":hover:focus")}`]: focusGlow,
   [`${sel(["topcoat-icon-button", "topcoat-icon-button--large"], ":active")}`]: pressed,
   [sel(["topcoat-icon-button--quiet"])]: quiet,
   [sel(quietOnes, ":hover")]: quietHover,
+  [sel(quietOnes, '[aria-pressed="true"]:hover')]: { boxShadow: "var(--tc-shadow-inset-active)" },
   [`${sel(quietOnes, ":active")}, ${sel(quietOnes, ":focus:active")}`]: quietPressed,
   [sel(large)]: {
     width: "var(--tc-control-height-large)",

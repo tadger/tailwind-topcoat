@@ -35,6 +35,8 @@ export default {
   [`${sel(pressable, ":active")}, :checked + .topcoat-button-bar__button`]: pressed,
   [sel(["topcoat-button--quiet"])]: quiet,
   [sel(quietOnes, ":hover")]: quietHover,
+  // a pressed quiet button keeps the pressed shadow under the pointer (quietHover would swap in the raised one)
+  [sel(quietOnes, '[aria-pressed="true"]:hover')]: { boxShadow: "var(--tc-shadow-inset-active)" },
   [`${sel(quietOnes, ":active")}, ${sel(quietOnes, ":focus:active")}`]: quietPressed,
   [sel(large)]: largeSize,
   [sel(["topcoat-button--large--quiet"])]: quiet,

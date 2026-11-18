@@ -12,15 +12,23 @@ Status: implemented. The "Undecided" items in that doc (panel, toggle tile, dial
 ## Deviations and additions
 
 - **`--tc-invalid-text`** (and `text-topcoat-invalid-text`) is new. `--tc-invalid` (#ec514e) is only about 2.9:1 against
-  the light page, so `--invalid` field messages use a text-safe red (light #b42318, dark #ffaca8; both at least 4.5:1
-  on the page and surface). The control's own invalid border still uses `--tc-invalid`.
-- **`--tc-highlight`** is #c26400 (light) and #fbbf24 (dark). Both are at least 3:1 against `--tc-page-bg` and `--tc-surface`
-  in their scheme and are at least 90 degrees of hue away from the focus blue. The app's stopgap light amber (#f59e0b) is only
-  1.65:1 against the light page, so the app's `--pad-playhead` will look darker/more orange in light mode after migrating.
-- **Pressed look** also applies to `--quiet`, `--large` and `--large--quiet` buttons (not `--cta`). A pressed button stays pressed on
-  hover, and keeps the focus glow while focused.
+  the light page, so `--invalid` field messages use a text-safe red (light #a61e15, dark #ffcdca; at least 4.5:1 on the
+  page, surface, raised, input and focused-input backgrounds). The control's own invalid border still uses `--tc-invalid`.
+- **`--tc-highlight`** is #b35c00 (light) and #fbbf24 (dark). Both are at least 3:1 against page, surface, raised, sunken,
+  active, hover, input and list backgrounds in their scheme, and at least 90 degrees of hue from the focus blue. The one
+  exception is `--tc-cta-bg` (CTA blue): a highlight touching a CTA-blue fill separates by hue, not luminance. Opacity
+  modifiers (`bg-topcoat-highlight/50`) lower the contrast below 3:1. The app's stopgap light amber (#f59e0b) is only
+  1.65:1 against the light page, so `--pad-playhead` will look darker (burnt orange) in light mode after migrating.
+- **`--tc-text-on-highlight`** (#fff light, #1a1a1a dark; `text-topcoat-on-highlight`) is new, for text on a highlight fill.
+- **Pressed look** also applies to `--quiet`, `--large` and `--large--quiet` buttons and to icon buttons (not `--cta`; `mixed` is
+  unpressed). A pressed button stays pressed on hover, keeps the pressed shadow when quiet, and keeps the focus glow while focused.
 - **Select** chevron is two gradient half-squares coloured from `--tc-text-muted`, sized by new scale tokens
-  `--tc-select-arrow-size|offset|gap`. `<select multiple>` and `size>1` (listboxes) get natural height and no chevron.
-- **Field** wrapper is a flex column with a fixed `0.25rem` gap (same on desktop and mobile). For a label beside the control use
-  utilities (`flex-row items-center`). Help text uses `--tc-text` (not muted) so it passes 4.5:1 on the page background.
-- **Tooltip** sets no `position`, `display`, `z-index` or offsets.
+  `--tc-select-arrow-size|offset|gap`. `<select multiple>` and `size>1` (listboxes) get natural height and no chevron. It shows
+  the same invalid border as the text input for `:invalid` and `[aria-invalid="true"]` (also added to text input and textarea),
+  and returns to the native arrow in forced-colors mode. The chevron follows `--tc-text-muted` as requested, which is faint
+  (about 1.7:1 on white); a dedicated `--tc-select-arrow` token would be the fix if the app wants it stronger.
+- **Field** wrapper is a flex column with `align-items: flex-start`, so controls keep their natural width (add `w-full` to stretch),
+  and a fixed `0.25rem` gap (same on desktop and mobile). For a label beside the control use utilities (`flex-row items-center`).
+  Help text uses `--tc-text` (not muted) so it passes 4.5:1 on the page background; message text is 0.9 of the control font size.
+- **Tooltip** uses `--tc-surface` (as requested), the scale's control font size (12px on desktop), a soft drop shadow, and a
+  border; it sets no `position`, `display`, `z-index` or offsets.

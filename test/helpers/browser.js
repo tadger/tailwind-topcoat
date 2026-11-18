@@ -18,10 +18,10 @@ const classesIn = (html) => [...html.matchAll(/class="([^"]+)"/g)].flatMap((m) =
  * Renders `html` with the plugin's CSS in Chromium.
  * scale "mobile" sets data-topcoat on the wrapper; scheme drives prefers-color-scheme.
  */
-export async function renderPage(html, { scheme = "light", scale = "desktop", dir = "ltr", width = 600, css: extraCss = "" } = {}) {
+export async function renderPage(html, { scheme = "light", scale = "desktop", dir = "ltr", width = 600, css: extraCss = "", forcedColors = "none" } = {}) {
   const css = await buildCss({ candidates: classesIn(html), extraCss });
   const browser = await getBrowser();
-  const context = await browser.newContext({ colorScheme: scheme, viewport: { width, height: 800 } });
+  const context = await browser.newContext({ colorScheme: scheme, forcedColors, viewport: { width, height: 800 } });
   const page = await context.newPage();
   page.setDefaultTimeout(3000);
   const scaleAttr = scale === "mobile" ? ' data-topcoat="mobile"' : "";

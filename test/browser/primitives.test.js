@@ -73,7 +73,7 @@ const SELECT = `
   <select id="sl" class="topcoat-select--large"><option>One</option></select>
   <select id="sd" class="topcoat-select" disabled><option>Off</option></select>
   <input id="td" class="topcoat-text-input" disabled value="off">`;
-const BOX = ["height", "borderTopWidth", "borderTopStyle", "borderTopColor", "borderTopLeftRadius", "backgroundColor", "color", "fontSize", "boxShadow"];
+const BOX = ["height", "paddingLeft", "borderTopWidth", "borderTopStyle", "borderTopColor", "borderTopLeftRadius", "backgroundColor", "color", "fontSize", "boxShadow"];
 
 for (const [scheme, scale] of MATRIX) {
   const label = `${scheme}/${scale}`;
@@ -224,7 +224,14 @@ for (const [scheme, scale] of MATRIX) {
     assert.equal(t.zIndex, "auto");
     assert.equal(t.borderTopStyle, "solid");
     assert.notEqual(t.borderTopLeftRadius, "0px");
-    assert.ok(parseFloat(t.fontSize) <= parseFloat(await page.$eval("#host", (el) => getComputedStyle(el).fontSize)), "small text");
+    const controlSize = await page.evaluate(() => { const i = document.createElement("input"); i.className = "topcoat-text-input"; document.getElementById("root").appendChild(i); const f = getComputedStyle(i).fontSize; i.remove(); return f; });
+    assert.equal(t.fontSize, controlSize, "tooltip text is the scale's small control size (12px desktop), not inherited");
+    const more = await css(page, "#t", ["display", "transform", "marginTop", "marginLeft", "backgroundColor"]);
+    assert.equal(more.display, "inline");
+    assert.equal(more.transform, "none");
+    assert.equal(more.marginTop + more.marginLeft, "0px0px");
+    assert.equal(t.top + t.left, "autoauto", "no offsets");
+    assert.equal(more.backgroundColor, await tokenColor(page, "--tc-surface"), "tooltip uses --tc-surface");
     assert.ok(contrast(t.color, t.backgroundColor) >= 4.5, `tooltip text contrast ${contrast(t.color, t.backgroundColor).toFixed(2)}:1`);
     await close();
   });
@@ -243,3 +250,149 @@ test("select: a multi-row listbox (multiple or size>1) keeps its natural height 
   assert.notEqual((await css(page, "#one", ["backgroundImage"])).backgroundImage, "none", "size=1 is a drop-down: keeps its chevron");
   await close();
 });
+
+
+// =============== review fixes ===============
+const px = (page, sel, varName) => page.$eval(sel, (el, v) => {
+  const p = document.createElement("span");
+  p.style.cssText = `position:absolute;visibility:hidden;width:${getComputedStyle(el).getPropertyValue(v).trim()}`;
+  el.parentElement.appendChild(p);
+  const w = p.getBoundingClientRect().width;
+  p.remove();
+  return w;
+}, varName);
+
+test("field: controls keep their natural width (the wrapper must not stretch them)", async () => {
+  const html = `<div style="width:500px">
+    <div class="topcoat-field"><input id="fi" class="topcoat-text-input"><select id="fs" class="topcoat-select"><option>a</option></select>
+      <button id="fb" class="topcoat-button">Go</button><label id="fc" class="topcoat-checkbox"><input type="checkbox"><div class="topcoat-checkbox__checkmark"></div> Yes</label></div>
+    <input id="oi" class="topcoat-text-input"><select id="os" class="topcoat-select"><option>a</option></select>
+    <button id="ob" class="topcoat-button">Go</button><label id="oc" class="topcoat-checkbox"><input type="checkbox"><div class="topcoat-checkbox__checkmark"></div> Yes</label></div>`;
+  const { page, close } = await renderPage(html);
+  const w = (sel) => page.$eval(sel, (el) => el.getBoundingClientRect().width);
+  for (const [inside, outside] of [["#fi", "#oi"], ["#fs", "#os"], ["#fb", "#ob"], ["#fc", "#oc"]]) {
+    assert.ok(Math.abs((await w(inside)) - (await w(outside))) < 1, `${inside} is ${await w(inside)}px inside the field vs ${await w(outside)}px outside`);
+  }
+  await close();
+});
+
+test("field: the label is set at the scale's control font size", async () => {
+  for (const scale of ["desktop", "mobile"]) {
+    const { page, close } = await renderPage(FIELD, { scale });
+    assert.equal((await css(page, "#l", ["fontSize"])).fontSize, (await css(page, "#x", ["fontSize"])).fontSize);
+    await close();
+  }
+});
+
+// highlight / invalid-text: contrast on every surface where they can really appear
+const LIGHT_AND_DARK = ["light", "dark"];
+for (const scheme of LIGHT_AND_DARK) {
+  test(`[${scheme}] highlight holds 3:1 on every surface, and its on-color text holds 4.5:1`, async () => {
+    const { page, close } = await renderPage(`<div id="u" class="bg-topcoat-highlight text-topcoat-on-highlight ring-2 ring-topcoat-highlight">x</div>`, { scheme });
+    const hl = await tokenColor(page, "--tc-highlight");
+    for (const bg of ["--tc-page-bg", "--tc-surface", "--tc-surface-raised", "--tc-surface-sunken", "--tc-surface-active", "--tc-surface-hover", "--tc-input-bg", "--tc-list-bg"]) {
+      const ratio = contrast(hl, await tokenColor(page, bg));
+      assert.ok(ratio >= 3, `highlight on ${bg}: ${ratio.toFixed(2)}:1`);
+    }
+    const u = await css(page, "#u", ["color", "backgroundColor", "boxShadow"]);
+    assert.equal(u.color, await tokenColor(page, "--tc-text-on-highlight"), "text-topcoat-on-highlight utility");
+    assert.ok(contrast(u.color, u.backgroundColor) >= 4.5, `text on a highlight fill: ${contrast(u.color, u.backgroundColor).toFixed(2)}:1`);
+    assert.ok(u.boxShadow.includes(hl), `ring-topcoat-highlight must paint the highlight color; got ${u.boxShadow}`);
+    await close();
+  });
+
+  test(`[${scheme}] --tc-invalid-text holds 4.5:1 on every surface a message can sit on`, async () => {
+    const { page, close } = await renderPage(`<p>x</p>`, { scheme });
+    const c = await tokenColor(page, "--tc-invalid-text");
+    for (const bg of ["--tc-page-bg", "--tc-surface", "--tc-surface-raised", "--tc-input-bg", "--tc-input-bg-focus"]) {
+      const ratio = contrast(c, await tokenColor(page, bg));
+      assert.ok(ratio >= 4.5, `invalid text on ${bg}: ${ratio.toFixed(2)}:1`);
+    }
+    await close();
+  });
+}
+
+// select: geometry of the chevron, hit-testing, validity, forced colors
+for (const [scheme, scale] of [["light", "desktop"], ["dark", "mobile"]]) {
+  test(`[${scheme}/${scale}] select chevron is drawn at the right edge with the token size and offset`, async () => {
+    const { page, close } = await renderPage(SELECT, { scheme, scale });
+    const g = await css(page, "#s", ["backgroundSize", "backgroundRepeat", "backgroundPositionX", "backgroundPositionY"]);
+    const size = await px(page, "#s", "--tc-select-arrow-size");
+    const offset = await px(page, "#s", "--tc-select-arrow-offset");
+    assert.equal(g.backgroundRepeat, "no-repeat");
+    assert.deepEqual(g.backgroundSize.split(",").map((v) => v.trim()), [`${size}px ${size}px`, `${size}px ${size}px`]);
+    const fromRight = [...g.backgroundPositionX.matchAll(/calc\(100% - ([\d.]+)px\)/g)].map((m) => Number(m[1]));
+    assert.equal(fromRight.length, 2, `expected two right-anchored halves, got ${g.backgroundPositionX}`);
+    assert.ok(Math.abs(fromRight[1] - offset) < 0.1, `right half should end ${offset}px from the edge, got ${fromRight[1]}`);
+    assert.ok(Math.abs(fromRight[0] - (offset + size)) < 0.1, `left half should end ${offset + size}px from the edge, got ${fromRight[0]}`);
+    assert.equal(g.backgroundPositionY, "50%, 50%");
+    await close();
+  });
+}
+
+test("select: an enabled select receives pointer events at its center", async () => {
+  const { page, close } = await renderPage(SELECT);
+  const hit = await page.$eval("#s", (el) => { const r = el.getBoundingClientRect(); return document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2) === el; });
+  assert.equal(hit, true);
+  await close();
+});
+
+const INVALID = `<select id="sv" class="topcoat-select" required><option value="">Pick</option><option>a</option></select>
+  <select id="so" class="topcoat-select"><option>a</option></select>
+  <input id="iv" class="topcoat-text-input" required>
+  <input id="ia" class="topcoat-text-input" aria-invalid="true" value="x">
+  <textarea id="ta" class="topcoat-textarea" aria-invalid="true"></textarea>
+  <select id="sa" class="topcoat-select" aria-invalid="true"><option>a</option></select>`;
+for (const scheme of LIGHT_AND_DARK) {
+  test(`[${scheme}] invalid state: required-empty select, and aria-invalid on inputs, textareas and selects, show the invalid border`, async () => {
+    const { page, close } = await renderPage(INVALID, { scheme });
+    const red = await tokenColor(page, "--tc-invalid");
+    const normal = (await css(page, "#so", ["borderTopColor"])).borderTopColor;
+    assert.notEqual(normal, red);
+    for (const id of ["#sv", "#iv", "#ia", "#ta", "#sa"]) assert.equal((await css(page, id, ["borderTopColor"])).borderTopColor, red, `${id} border`);
+    await close();
+  });
+}
+
+test("select: forced-colors mode gets the native arrow back (gradients are dropped there)", async () => {
+  const { page, close } = await renderPage(SELECT, { forcedColors: "active" });
+  assert.equal((await css(page, "#s", ["appearance"])).appearance, "auto");
+  await close();
+});
+
+// pressed state: variants, exclusions, hover shadow
+const PRESS2 = `
+  <button id="q" class="topcoat-button--quiet" aria-pressed="true">q</button>
+  <button id="qn" class="topcoat-button--quiet">q</button>
+  <button id="l" class="topcoat-button--large" aria-pressed="true">l</button>
+  <button id="lq" class="topcoat-button--large--quiet" aria-pressed="true">lq</button>
+  <button id="c" class="topcoat-button--cta" aria-pressed="true">c</button>
+  <button id="cn" class="topcoat-button--cta">c</button>
+  <button id="ib" class="topcoat-icon-button" aria-pressed="true"><span class="topcoat-icon"></span></button>
+  <button id="ibn" class="topcoat-icon-button"><span class="topcoat-icon"></span></button>
+  <button id="ibq" class="topcoat-icon-button--quiet" aria-pressed="true"><span class="topcoat-icon"></span></button>
+  <button id="d" class="topcoat-button" aria-pressed="true" disabled>d</button>`;
+for (const scheme of LIGHT_AND_DARK) {
+  test(`[${scheme}] pressed: quiet, large and icon variants are selected; the CTA keeps its look; disabled stays disabled`, async () => {
+    const { page, close } = await renderPage(PRESS2, { scheme });
+    const active = await tokenColor(page, "--tc-surface-active");
+    for (const id of ["#q", "#l", "#lq", "#ib", "#ibq"]) assert.equal((await css(page, id, LOOK)).backgroundColor, active, `${id} should be selected`);
+    assert.equal((await css(page, "#qn", LOOK)).backgroundColor, "rgba(0, 0, 0, 0)", "unpressed quiet stays transparent");
+    assert.notEqual((await css(page, "#ibn", LOOK)).backgroundColor, active);
+    assert.deepEqual(await css(page, "#c", LOOK), await css(page, "#cn", LOOK), "aria-pressed must not change a CTA");
+    assert.equal((await css(page, "#d", ["opacity"])).opacity, "0.3");
+    assert.equal((await css(page, "#d", ["pointerEvents"])).pointerEvents, "none");
+    await close();
+  });
+
+  test(`[${scheme}] a pressed quiet or icon button keeps the pressed shadow while hovered`, async () => {
+    const { page, close } = await renderPage(PRESS2, { scheme });
+    for (const id of ["#q", "#lq", "#ibq"]) {
+      const rest = (await css(page, id, LOOK)).boxShadow;
+      await page.hover(id);
+      assert.equal((await css(page, id, LOOK)).boxShadow, rest, `${id} shadow changed on hover`);
+      await page.mouse.move(0, 700);
+    }
+    await close();
+  });
+}
