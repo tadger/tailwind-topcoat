@@ -19,14 +19,20 @@ shadows are `--tc-*` CSS variables, and light/dark and desktop/mobile are switch
 
 Install from a local path or git while the repo is private, for example `pnpm add ../tailwind-topcoat`.
 
-Like any Tailwind class, a `topcoat-*` class only appears in your CSS if Tailwind finds it in your
-source files. Utilities override components, so `topcoat-button px-6` does what you expect.
+Components are emitted in Tailwind's base layer, so every utility beats them (`topcoat-button px-6`,
+`topcoat-button bg-red-500` even on hover, `topcoat-button absolute`). The trade-off: all `topcoat-*` rules are
+always in your CSS (about 7 KB gzipped) and Tailwind's `prefix()` option is not supported.
 
 ### Light / dark
 
 Dark follows Tailwind's `dark` variant, so it is `prefers-color-scheme` by default. To drive it with a
 class instead, add `@custom-variant dark (&:where(.dark, .dark *));` to your CSS and put `class="dark"` on
-`<html>`. The dark tokens live on `:root`, so apply the class to `<html>`, not to a subtree.
+`<html>`. To make a dark *subtree* inside a light page, put the class on a wrapper that also has a
+`data-topcoat` attribute (for example `<div class="dark" data-topcoat="desktop">`), because that attribute is
+what re-applies the dark tokens there. A light island inside a dark page is not supported.
+
+Components use `font: inherit`; add `font-topcoat bg-topcoat-page` (and `text-topcoat-text`) to `<body>` for
+Topcoat's font and page color.
 
 ### Desktop / mobile
 
@@ -44,7 +50,9 @@ and exposes a few as Tailwind utilities: `bg-topcoat-surface`, `bg-topcoat-page`
 Button (`--quiet`, `--large`, `--large--quiet`, `--cta`, `--large--cta`), icon button (+ `topcoat-icon`),
 button bar, checkbox, radio button, switch, range, text input (`--large`, `:invalid`), textarea,
 search input (`--large`), list, navigation bar, tab bar, notification. Markup is the same as Topcoat's;
-open `demo/` for every component.
+open `demo/` for every component. Radio-driven tab bars and button bars (`<label><input type="radio"><button>`)
+work by mouse and keyboard; give the inner `<button>` `tabindex="-1"` (or use a `<span>`) so it isn't a second tab stop.
+Bars and the navigation bar need a width (`w-full`) for long labels to ellipsize.
 
 List and navigation bar only existed in Topcoat's mobile builds; here they also have desktop sizes.
 
@@ -54,6 +62,8 @@ List and navigation bar only existed in Topcoat's mobile builds; here they also 
   the left but padded the text only ~21px. The icon's offset, size and gap are variables
   (`--tc-search-icon-*`) and the start padding is computed from them, so they can't drift apart. It also
   mirrors in right-to-left layouts and the clear button is styled so it doesn't collide with the text.
+- Radio-driven tab bars and button bars are clickable on the whole segment (Topcoat's only responded to a
+  click on a 13px hidden input), and the switch's focus ring is no longer clipped and works in `dir="rtl"`.
 - Long button labels ellipsize instead of overflowing; tab bar buttons fill their cells; button bar
   segments touch; form controls keep native keyboard focus with a visible ring.
 

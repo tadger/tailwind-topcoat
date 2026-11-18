@@ -1,3 +1,10 @@
+import { disabled, hoverFill, pressed } from "./_shared.js";
+
+const item = ".topcoat-button-bar__item";
+const buttons = [".topcoat-button-bar__button", ".topcoat-button-bar__button--large"];
+const forButtons = (suffix) => buttons.map((b) => `${item}${suffix} > ${b}`).join(", ");
+const afterInput = (state) => buttons.map((b) => `${item} > input${state} + ${b}`).join(", ");
+
 // Structure only: the bar's buttons get their look from button.js (topcoat-button-bar__button*).
 export default {
   ".topcoat-button-bar": {
@@ -43,4 +50,9 @@ export default {
   ".topcoat-button-bar__button:focus, .topcoat-button-bar__button--large:focus": {
     zIndex: "1",
   },
+  // Radio-driven segments (<label><input type="radio"><button>): see tab-bar.js for why clicks fall through.
+  [forButtons(":has(> input)")]: { pointerEvents: "none" },
+  [forButtons(":has(> input):hover")]: hoverFill,
+  [forButtons(":has(> input):active")]: pressed,
+  [afterInput(":disabled")]: disabled,
 };

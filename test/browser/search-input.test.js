@@ -11,22 +11,19 @@ const MARKUP = `
 
 /**
  * Icon end edge minus text start edge, in px, both measured from the inline-start edge of the padding box.
- * Positive means the text starts underneath the icon.
+ * Positive means the text starts underneath the icon. The icon edge comes from the *painted* background
+ * position and size (not from the variables the CSS derives them from), so a broken position is caught.
  */
 function overlap(page, sel) {
   return page.$eval(sel, (el) => {
     const cs = getComputedStyle(el);
-    const toPx = (v) => {
-      const probe = document.createElement("span");
-      probe.style.cssText = `position:absolute;visibility:hidden;width:${v.trim()}`;
-      el.parentElement.appendChild(probe);
-      const w = probe.getBoundingClientRect().width;
-      probe.remove();
-      return w;
-    };
-    const textStart = parseFloat(cs.direction === "rtl" ? cs.paddingRight : cs.paddingLeft);
-    const iconEnd = toPx(cs.getPropertyValue("--tc-search-icon-offset")) + toPx(cs.getPropertyValue("--tc-search-icon-size"));
-    return iconEnd - textStart;
+    const rtl = cs.direction === "rtl";
+    const textStart = parseFloat(rtl ? cs.paddingRight : cs.paddingLeft);
+    const x = cs.backgroundPositionX; // "10px" (ltr) or "calc(100% - 10px)" (rtl, anchored right)
+    const offset = rtl ? parseFloat(x.match(/calc\(100% - ([\d.]+)px\)/)?.[1] ?? NaN) : parseFloat(x);
+    const size = parseFloat(cs.backgroundSize);
+    if (Number.isNaN(offset) || Number.isNaN(size)) throw new Error(`cannot read icon geometry: ${x} / ${cs.backgroundSize}`);
+    return offset + size - textStart;
   });
 }
 
@@ -40,11 +37,11 @@ for (const scheme of ["light", "dark"]) {
       await close();
     });
 
-    test(`[${label}] long typed text scrolls instead of changing padding`, async () => {
+    test(`[${label}] long typed text scrolls inside the box instead of resizing it`, async () => {
       const { page, close } = await renderPage(MARKUP, { scheme, scale });
-      const before = await page.$eval("#a", (el) => getComputedStyle(el).paddingLeft);
+      const before = await page.$eval("#a", (el) => el.getBoundingClientRect().width);
       await page.fill("#a", "x".repeat(60));
-      assert.equal(await page.$eval("#a", (el) => getComputedStyle(el).paddingLeft), before);
+      assert.equal(await page.$eval("#a", (el) => el.getBoundingClientRect().width), before);
       assert.ok(await page.$eval("#a", (el) => el.scrollWidth > el.clientWidth), "text should overflow-scroll");
       await close();
     });

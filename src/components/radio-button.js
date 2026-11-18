@@ -17,7 +17,8 @@ export default {
     ...hiddenInput,
     height: "var(--tc-radio-size)",
     width: "var(--tc-radio-size)",
-    margin: "0 calc(-1 * var(--tc-radio-size)) calc(-1 * var(--tc-radio-size)) 0",
+    marginBlock: "0 calc(-1 * var(--tc-radio-size))",
+    marginInline: "0 calc(-1 * var(--tc-radio-size))",
   },
   [mark]: {
     boxSizing: "border-box",

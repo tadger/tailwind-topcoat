@@ -16,6 +16,12 @@ export default {
     border: "1px solid var(--tc-border)",
     overflow: "hidden",
     width: "var(--tc-switch-width)",
+    direction: "ltr", // the ON/OFF art and thumb travel are physical; keep them readable in rtl pages
+  },
+  // The ring is drawn on the frame: the thumb sits inside overflow:hidden, which would clip its own glow.
+  [`.topcoat-switch:has(${input}:focus)`]: {
+    borderColor: "var(--tc-focus-border)",
+    boxShadow: "0 0 0 2px var(--tc-focus-ring)",
   },
   [input]: hiddenInput,
   [toggle]: {
@@ -67,10 +73,7 @@ export default {
     border: "1px solid var(--tc-border)",
     boxShadow: "var(--tc-shadow-inset)",
   },
-  [`${input}:focus + ${toggle}`]: {
-    border: "1px solid var(--tc-focus-border)",
-    boxShadow: "0 0 0 2px var(--tc-focus-ring)",
-  },
+  [`${input}:focus + ${toggle}`]: { borderColor: "var(--tc-focus-border)" },
   [`${input}:disabled + ${toggle}`]: disabled,
   [`${input}:disabled + ${toggle}::before, ${input}:disabled + ${toggle}::after`]: { background: "transparent" },
 };

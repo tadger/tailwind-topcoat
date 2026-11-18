@@ -23,7 +23,7 @@ const style = (page, sel, prop, pseudo) =>
 const CONTROLS = {
   checkbox: ["#cbi", "#cb .topcoat-checkbox__checkmark", "::before"],
   radio: ["#rbi", "#rb .topcoat-radio-button__checkmark", "::before"],
-  switch: ["#swi", "#sw .topcoat-switch__toggle", undefined],
+  switch: ["#swi", "#sw", undefined], // the ring is drawn on the switch frame: its thumb sits inside overflow:hidden
 };
 
 for (const scheme of ["light", "dark"]) {
@@ -33,7 +33,6 @@ for (const scheme of ["light", "dark"]) {
     for (const [name, [input, visible, pseudo]] of Object.entries(CONTROLS)) {
       test(`[${label}] ${name}: keyboard focus shows a ring on the visible control`, async () => {
         const { page, close } = await renderPage(MARKUP, { scheme, scale });
-        assert.notEqual(await style(page, visible, "boxShadow", pseudo), "none");
         assert.ok(!(await style(page, visible, "boxShadow", pseudo)).includes(FOCUS_RING), "ring before focus");
         await page.focus(input);
         assert.ok((await style(page, visible, "boxShadow", pseudo)).includes(FOCUS_RING), "no focus ring on the visible control");
@@ -95,3 +94,28 @@ for (const scheme of ["light", "dark"]) {
     });
   }
 }
+
+test("rtl: switch keeps its thumb at the left when off and the right when on, with a readable state", async () => {
+  const { page, close } = await renderPage(MARKUP, { dir: "rtl" });
+  const geo = () => page.evaluate(() => {
+    const sw = document.querySelector("#sw").getBoundingClientRect();
+    const th = document.querySelector("#sw .topcoat-switch__toggle").getBoundingClientRect();
+    return { fromLeft: th.left - sw.left, fromRight: sw.right - th.right, w: sw.width };
+  });
+  const off = await geo();
+  assert.ok(off.fromLeft < off.w / 4, `off thumb should be at the left edge (${off.fromLeft}/${off.w})`);
+  await page.check("#swi", { force: true });
+  await page.waitForTimeout(200);
+  const on = await geo();
+  assert.ok(on.fromRight < on.w / 4, `on thumb should be at the right edge (${on.fromRight}/${on.w})`);
+  await close();
+});
+
+test("rtl: hidden checkbox and radio inputs sit on top of their visible marks", async () => {
+  const { page, close } = await renderPage(MARKUP, { dir: "rtl" });
+  for (const [input, mark] of [["#cbi", "#cb .topcoat-checkbox__checkmark"], ["#rbi", "#rb .topcoat-radio-button__checkmark"]]) {
+    const [i, m] = await Promise.all([input, mark].map((sel) => page.$eval(sel, (el) => { const r = el.getBoundingClientRect(); return { l: r.left, r: r.right }; })));
+    assert.ok(Math.abs(i.l - m.l) <= 1.5 && Math.abs(i.r - m.r) <= 1.5, `${input} is off its mark: input ${i.l}-${i.r}, mark ${m.l}-${m.r}`);
+  }
+  await close();
+});

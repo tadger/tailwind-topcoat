@@ -146,7 +146,15 @@
     --tc-focus-ring: #6fb5f1;
     --tc-focus-inset: inset 0 1px rgba(255, 255, 255, 0.36);
     --tc-disabled-opacity: 0.3;
+  }
 
+  /*
+   * Dark values. Besides :root, any [data-topcoat] element re-declares them when Tailwind's dark variant
+   * matches it, so with a class strategy a `.dark` subtree needs a data-topcoat wrapper
+   * (data-topcoat="desktop" is a harmless no-op scale) to switch its components.
+   */
+  :root,
+  [data-topcoat] {
     @variant dark {
       --tc-font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
       --tc-page-bg: #4b4d4e;
@@ -199,6 +207,23 @@
   --color-topcoat-text-muted: var(--tc-text-muted);
   --color-topcoat-border: var(--tc-border);
   --color-topcoat-cta: var(--tc-cta-bg);
+  --color-topcoat-surface-hover: var(--tc-surface-hover);
+  --color-topcoat-surface-active: var(--tc-surface-active);
+  --color-topcoat-surface-sunken: var(--tc-surface-sunken);
+  --color-topcoat-input: var(--tc-input-bg);
+  --color-topcoat-strong: var(--tc-text-strong);
+  --color-topcoat-on-accent: var(--tc-text-on-accent);
+  --color-topcoat-cta-hover: var(--tc-cta-bg-hover);
+  --color-topcoat-cta-active: var(--tc-cta-bg-active);
+  --color-topcoat-cta-border: var(--tc-cta-border);
+  --color-topcoat-focus: var(--tc-focus-border);
+  --color-topcoat-focus-ring: var(--tc-focus-ring);
+  --color-topcoat-invalid: var(--tc-invalid);
+  --color-topcoat-selected: var(--tc-selected-bg);
+  --radius-topcoat-pill: var(--tc-radius-pill);
+  --shadow-topcoat-input: var(--tc-shadow-input);
+  --shadow-topcoat-search: var(--tc-shadow-search);
+  --shadow-topcoat-inset-active: var(--tc-shadow-inset-active);
   --radius-topcoat: var(--tc-radius);
   --shadow-topcoat-inset: var(--tc-shadow-inset);
 }

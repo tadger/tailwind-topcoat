@@ -17,7 +17,8 @@ export default {
     ...hiddenInput,
     height: "var(--tc-check-size)",
     width: "var(--tc-check-size)",
-    margin: "0 calc(-1 * var(--tc-check-size)) calc(-1 * var(--tc-check-size)) 0",
+    marginBlock: "0 calc(-1 * var(--tc-check-size))",
+    marginInline: "0 calc(-1 * var(--tc-check-size))",
   },
   [mark]: {
     boxSizing: "border-box",

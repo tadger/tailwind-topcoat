@@ -22,7 +22,7 @@ async function collect() {
     const dark = isDark(decl);
     if (sel.includes('[data-topcoat="mobile"]')) buckets[dark ? "mobileDark" : "mobile"][decl.prop] = decl.value;
     else if (sel.includes('[data-topcoat="desktop"]')) buckets.desktop[decl.prop] = decl.value;
-    else if (sel.trim() === ":root") buckets[dark ? "dark" : "light"][decl.prop] = decl.value;
+    else if (/^:root(,\s*\[data-topcoat\])?$/.test(sel.trim())) buckets[dark ? "dark" : "light"][decl.prop] = decl.value;
   });
   return { css, ...buckets };
 }
@@ -49,4 +49,17 @@ test("mobile scale redefines every desktop size token", async () => {
 test("theme utilities exist and follow the variables", async () => {
   const { css } = await collect();
   assert.match(css, /\.bg-topcoat-surface\s*\{[^}]*var\(--tc-surface\)/);
+});
+
+test("every role token is exposed as a Tailwind utility", async () => {
+  const utilities = [
+    "bg-topcoat-surface-hover", "bg-topcoat-surface-active", "bg-topcoat-surface-sunken", "bg-topcoat-input",
+    "text-topcoat-strong", "text-topcoat-on-accent", "bg-topcoat-cta-hover", "bg-topcoat-cta-active",
+    "border-topcoat-cta-border", "border-topcoat-focus", "bg-topcoat-focus-ring", "bg-topcoat-invalid",
+    "bg-topcoat-selected", "rounded-topcoat-pill", "shadow-topcoat-input", "shadow-topcoat-search",
+    "shadow-topcoat-inset-active",
+  ];
+  const css = await buildCss({ candidates: utilities });
+  const missing = utilities.filter((u) => !css.includes(`.${u} {`));
+  assert.deepEqual(missing, []);
 });

@@ -40,15 +40,18 @@ test("button rules use tokens only (no hex literals)", () => {
   assert.deepEqual(hexIn(/\.topcoat-(button|icon-button)/), []);
 });
 
-test("utilities override components (they are emitted after every topcoat rule)", () => {
-  const lastTopcoat = css.lastIndexOf(".topcoat-");
-  assert.ok(lastTopcoat !== -1, "components not emitted");
-  for (const u of OVERRIDES) {
-    const at = css.indexOf(`.${u} {`);
-    assert.ok(at !== -1, `.${u} not emitted`);
-    assert.ok(at > lastTopcoat, `.${u} must come after component rules`);
-  }
+test("component rules live in the base layer, so every utility (and every state) beats them", () => {
+  const root = postcss.parse(css);
+  const inLayer = { base: 0, utilities: 0 };
+  root.walkRules(/\.topcoat-/, (rule) => {
+    for (let p = rule.parent; p; p = p.parent) {
+      if (p.type === "atrule" && p.name === "layer" && p.params in inLayer) { inLayer[p.params]++; break; }
+    }
+  });
+  assert.ok(inLayer.base > 50, "component rules should be in @layer base");
+  assert.equal(inLayer.utilities, 0, "no component rule may sit in the utilities layer");
 });
+
 
 test("search input padding is derived from the icon variables, not hard-coded", () => {
   const m = css.match(/padding-inline-start:\s*([^;]+);/g) ?? [];
