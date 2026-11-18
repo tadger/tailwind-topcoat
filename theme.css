@@ -20,6 +20,9 @@
     --tc-padding-x-large: 0.875rem;
     --tc-radius: 4px;
     --tc-radius-pill: 15px;
+    --tc-icon-button-padding-x: 0.25rem;
+    --tc-icon-size: 0.81406rem;
+    --tc-icon-size-large: 1.06344rem;
   }
 
   [data-topcoat="mobile"] {
@@ -33,6 +36,9 @@
     --tc-padding-x-large: 1.25rem;
     --tc-radius: 6px;
     --tc-radius-pill: 40px;
+    --tc-icon-button-padding-x: 0.75rem;
+    --tc-icon-size: 1.62rem;
+    --tc-icon-size-large: 2.5rem;
   }
 
   /* ---- color (light default, dark via Tailwind's dark variant) ---- */
